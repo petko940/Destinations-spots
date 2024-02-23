@@ -1,0 +1,39 @@
+<div class="bg-gray-700 text-orange-400">
+    <nav class="flex justify-between items-center gap-4 p-2 mx-5">
+        <ul>
+            <a routerLink=""><img src="./assets/home-nav.png" alt="" class="w-10"></a>
+        </ul>
+
+        <ul class="flex items-center gap-4">
+            <li class="relative">
+                <input type="text" placeholder="Search" class="max-w-36 border-2 border-white rounded py-1 px-3 pr-10">
+                <button type="button" class="absolute inset-y-0 right-0 mr-2">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </li>
+
+            <li>
+                <a routerLink="a" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">About</a>
+            </li>
+            <li>
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">All
+                    Destinations</a>
+            </li>
+            <li>
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Create
+                    Destination</a>
+            </li>
+            <li>
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Profile</a>
+            </li>
+            <li>
+                <a routerLink="" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Login</a>
+            </li>
+            <li>
+                <a routerLink="" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Register</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<router-outlet></router-outlet>
