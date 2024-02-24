@@ -1,0 +1,40 @@
+<div class="w-1/2 mx-auto">
+
+    <form [formGroup]="form" class="flex flex-col text-center" (ngSubmit)="onSubmit()">
+        <h1 class="text-center p-5">Test form validation</h1>
+
+        <div class="flex flex-col">
+            <label for="username">username</label>
+            <input type="text" id="username" username="username" formControlName="username" autocomplete="off">
+            <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched">
+                <small *ngIf="form.get('username')?.errors?.['required']" class="text-red-600">Username is required</small>
+                <small *ngIf="form.get('username')?.errors?.['minlength']" class="text-red-600">Username must be at least 3 characters long</small>
+                <small *ngIf="form.get('username')?.errors?.['maxlength']" class="text-red-600">Username must be at most 6 characters long</small>
+            </div>
+        </div>
+
+        <div class="flex flex-col">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" formControlName="password">
+            <div *ngIf="form.get('password')?.errors?.['required'] && form.get('password')?.touched">
+                <small class="text-red-600">Password is required</small>
+            </div>
+            <div *ngIf="form.get('password')?.errors?.['mismatch']">
+                <small class="text-red-600">Passwords do not match</small>
+            </div>
+        </div>
+        
+        <div class="flex flex-col">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" name="confirmPassword" formControlName="confirmPassword">
+            <div *ngIf="form.get('password')?.value !== form.get('confirmPassword')?.value && form.get('confirmPassword')?.touched">
+                <small class="text-red-600">Passwords do not match</small>
+            </div>
+        </div>
+    
+        <button type="submit" class="bg-amber-400 w-1/4 mx-auto my-2">Submit</button>
+
+        <div *ngIf="error" class="text-red-600">{{error}}</div>
+    </form>
+
+</div>
