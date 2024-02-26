@@ -1,36 +1,39 @@
 <div class="bg-gray-700 text-slate-50">
-    <nav class="flex justify-between items-center gap-4 p-2 mx-5">
-        <ul>
-            <a routerLink=""><img src="./assets/home-nav.png" alt="" class="w-10"></a>
-        </ul>
-
-        <ul class="flex items-center gap-4">
+    <nav class="flex flex-wrap justify-between max-lg:justify-center items-center gap-4 p-2 mx-2 text-xl">
+        <ul class="text-center max-lg:mx-auto flex items-center gap-4">
+            <li>
+                <a routerLink=""><img src="./assets/home-nav.png" alt="" class="w-16"></a>
+            </li>
             <li class="relative">
-                <input type="text" placeholder="Search" class="max-w-36 text-gray-700 border-2 border-white rounded py-1 px-3 pr-10">
+                <input type="text" placeholder="Search"
+                    class="max-w-52 text-gray-700 border-2 border-white rounded py-1 px-3 pr-10">
                 <button type="button" class="absolute inset-y-0 right-0 mr-2">
                     <i class="fa-solid fa-magnifying-glass text-gray-700"></i>
                 </button>
             </li>
+        </ul>
 
+        <ul class="flex flex-wrap justify-center items-center gap-4">
             <li>
-                <a routerLink="a" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">About</a>
+                <a routerLink="a" routerLinkActive="active" class="border-2 border-white rounded p-2">About</a>
             </li>
-            <li>
-                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">All
+            <li class="">
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded p-2">All
                     Destinations</a>
             </li>
             <li>
-                <a routerLink="/create" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Create
+                <a routerLink="/create" routerLinkActive="active" class="border-2 border-white rounded p-2">Create
                     Destination</a>
             </li>
             <li>
-                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Profile</a>
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded p-2">Profile</a>
             </li>
             <li>
-                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Login</a>
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded p-2">Login</a>
             </li>
             <li>
-                <a routerLink="/register" routerLinkActive="active" class="border-2 border-white rounded py-1 px-3">Register</a>
+                <a routerLink="/register" routerLinkActive="active"
+                    class="border-2 border-white rounded p-2">Register</a>
             </li>
         </ul>
     </nav>
