@@ -4,7 +4,10 @@ import { RegisterComponent } from './register/register.component';
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
 
 const routes: Routes = [
-  { path: "register", component: RegisterComponent  },
+  
+  { path: "create", component: CreateDestinationComponent },
+
+  { path: "register", component: RegisterComponent },
 ];
 
 @NgModule({
