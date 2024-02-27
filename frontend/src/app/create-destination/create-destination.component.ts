@@ -5,7 +5,7 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
-import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
 
@@ -26,7 +26,6 @@ export class CreateDestinationComponent implements OnInit {
     selectedLocation: any = {};
     photo: File | null = null;
     // fileTypeErrorMessage: string = "";
-
     // locationInput: string = "";
 
     submitErrorMessage: string = "";
@@ -34,10 +33,7 @@ export class CreateDestinationComponent implements OnInit {
     fg: FormGroup;
     searchInput: FormControl = new FormControl('');
 
-    constructor(
-        private createDestinationService: CreateDestinationService,
-        private http: HttpClient
-    ) {
+    constructor(private createDestinationService: CreateDestinationService) {
         this.fg = new FormGroup({
             name: new FormControl(''),
             description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure nostrum totam animi excepturi repellat dicta, deserunt quisquam quod! Officiis possimus voluptate eligendi rem ut minus aspernatur saepe, vero quod laboriosam?'),
@@ -135,7 +131,6 @@ export class CreateDestinationComponent implements OnInit {
     searchLocation() {
         this.submitErrorMessage = '';
 
-        // const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${this.fg.get('locationInput')?.value}`;
         this.createDestinationService.searchLocation(this.fg.get('locationInput')?.value)
             .subscribe((response: any) => {
                 if (response && response.length > 0) {
