@@ -1,26 +1,66 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import Map from 'ol/Map';
+import View from 'ol/View';
+import TileLayer from 'ol/layer/Tile';
+import OSM from 'ol/source/OSM';
+import Overlay from 'ol/Overlay';
+import { AbstractControl, FormControl, FormGroup } from '@angular/forms';
+import { debounceTime } from 'rxjs';
+import { CreateDestinationService } from '../services/create-destination.service';
+
 
 @Component({
     selector: 'app-create-destination',
     templateUrl: './create-destination.component.html',
     styleUrl: './create-destination.component.css'
 })
-export class CreateDestinationComponent {
+export class CreateDestinationComponent implements OnInit {
     map!: Map;
     markerOverlay!: Overlay;
 
+    // name: string = "";
+    // description: string = "";
     latitude: number | undefined;
     longitude: number | undefined;
     selectedLocation: any = {};
+    photo: File | null = null;
+    // fileTypeErrorMessage: string = "";
 
-    locationInput: string = "";
+    // locationInput: string = "";
 
-    errorMessage: string = "";
+    submitErrorMessage: string = "";
 
-    constructor(private http: HttpClient) { }
+    fg: FormGroup;
+    searchInput: FormControl = new FormControl('');
+
+    constructor(
+        private createDestinationService: CreateDestinationService,
+        private http: HttpClient
+    ) {
+        this.fg = new FormGroup({
+            name: new FormControl(''),
+            description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure nostrum totam animi excepturi repellat dicta, deserunt quisquam quod! Officiis possimus voluptate eligendi rem ut minus aspernatur saepe, vero quod laboriosam?'),
+            photo: new FormControl(''),
+            latitude: new FormControl(''),
+            longitude: new FormControl(''),
+            location: new FormControl(''),
+            selectedLocation: new FormControl(''),
+            locationInput: new FormControl('')
+        });
+
+        this.latitude = this.fg.get('latitude')?.value;
+        this.longitude = this.fg.get('longitude')?.value;
+    }
 
     ngOnInit() {
         this.initMap();
+
+        this.fg.get('locationInput')?.valueChanges
+            .pipe(debounceTime(1000))
+            .subscribe(() => {
+                this.searchLocation();
+            });
     }
 
     private initMap() {
@@ -32,7 +72,7 @@ export class CreateDestinationComponent {
                 })
             ],
             view: new View({
-                center: [25, 43],
+                center: [25.5, 42.8],
                 zoom: 7.5,
                 projection: 'EPSG:4326'
             })
@@ -61,51 +101,46 @@ export class CreateDestinationComponent {
             if (this.markerOverlay) {
                 const markerElement = this.markerOverlay.getElement();
                 if (markerElement) {
-                    markerElement.innerHTML = '<i class="fa-solid fa-location-dot" style="color: red;font-size: 30px"></i>';
+                    markerElement.innerHTML = '<i class="fa-solid fa-location-dot text-2xl text-red-700"></i>';
                 }
             }
-            const apiUrl = `https://nominatim.openstreetmap.org/reverse?lat=${this.latitude}&lon=${this.longitude}&format=json`;
-            this.http.get(apiUrl)
+
+            this.submitErrorMessage = '';
+
+            this.createDestinationService.getLocationCoordinates(this.latitude, this.longitude)
                 .subscribe((response: any) => {
-                    let location = '';
-
-                    if (response.address) {
-                        if (response.address.village) {
-                            location = `${response.address.village}, ${response.address.county}`;
-                        } else if (response.address.town) {
-                            location = `${response.address.town}, ${response.address.county}`;
-                        } else if (response.address.suburb) {
-                            location = `${response.address.suburb}, ${response.address.county}`;
-                        } else if (response.address.hamlet) {
-                            location = `${response.address.hamlet}, ${response.address.county}`;
-                        } else if (response.address.county) {
-                            location = `${response.address.county}`;
-                        }
-                        location += `, ${response.address.country}`
-
-                    } else {
-                        location = 'Unknown! Choose another location!';
-                    }
-
+                    const location = this.createDestinationService.formatLocation(response);
                     this.selectedLocation = {
                         latitude: this.latitude,
                         longitude: this.longitude,
-                        location,
+                        location: location
                     };
-                    console.log(this.selectedLocation['location']);
-
-                }, error => {
-                    console.error('Error:', error);
-                })
+                },
+                    error => {
+                        console.error('Error:', error);
+                    });
         });
     }
 
+    onFileSelected(event: any) {
+        const file: File = event.target.files[0];
+        this.fg.get('photo')?.setValue(file);
+        const fileType = file.type.split('/')[0];
+
+        if (fileType !== 'image') {
+            this.fg.get('photo')?.setErrors({ 'invalidImageFormat': true });
+        }
+    }
+
     searchLocation() {
-        const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${this.locationInput}`;
-        this.http.get(apiUrl)
+        this.submitErrorMessage = '';
+
+        // const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${this.fg.get('locationInput')?.value}`;
+        this.createDestinationService.searchLocation(this.fg.get('locationInput')?.value)
             .subscribe((response: any) => {
                 if (response && response.length > 0) {
                     const result = response[0];
+
                     this.latitude = parseFloat(result.lat);
                     this.longitude = parseFloat(result.lon);
 
@@ -130,18 +165,26 @@ export class CreateDestinationComponent {
             });
     }
 
-    isButtonDisabled(): boolean {
-        return !this.selectedLocation.location || this.selectedLocation.location === 'Unknown! Choose another location!';
-    }
+    // isButtonDisabled(): boolean {
+    //     return !this.selectedLocation.location || this.selectedLocation.location === 'Unknown! Choose another location!';
+    // }
 
-    sendLocationToDjango() {
-        this.http.post('http://127.0.0.1:8000/api/coordinates/', this.selectedLocation)
+    onSubmit() {
+        const requestData = {
+            name: this.fg.get('name')?.value,
+            description: this.fg.get('description')?.value,
+            latitude: this.latitude,
+            longitude: this.longitude,
+            location: this.selectedLocation.location,
+        };
+
+        this.createDestinationService.createDestination(requestData)
             .subscribe(response => {
                 console.log(response);
-                this.errorMessage = '';
+                this.submitErrorMessage = '';
             }, error => {
                 console.error('Error:', error);
-                this.errorMessage = 'Choose another location!';
+                this.submitErrorMessage = 'An error occurred. Please try again later.';
             }
             );
     }
