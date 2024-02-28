@@ -45,12 +45,21 @@
 
 <div class="w-7/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
 
-    <form class="flex flex-col gap-4 text-xl text-white p-7" [formGroup]="fg">
+    <form [formGroup]="fg" class="flex flex-col gap-4 text-xl text-white p-7">
         <h1 class="text-3xl mx-auto p-4">Create Destination Location</h1>
-
+    
         <div class="flex flex-col text-center w-1/2 mx-auto">
             <label for="name">Destination name</label>
             <input type="text" id="name" name="name" formControlName="name" class="text-black rounded-md p-3">
+            <div *ngIf="fg.get('name')?.invalid && fg.get('name')?.dirty">
+                <small *ngIf="fg.get('name')?.errors?.['required']" class="text-red-600">
+                    Destination name is required
+                </small>
+                <small *ngIf="fg.get('name')?.errors?.['minlength']" class="text-red-600">
+                    Description name must be at least 3 characters long
+                </small>
+            </div>
+    
         </div>
 
         <div class="flex flex-col text-center">
@@ -63,12 +72,19 @@
             <label for="photo">Photo</label>
             <input type="file" accept="image/*" id="photo" name="photo" (change)="onFileSelected($event)">
         </div>
-        <div *ngIf="fg.get('photo')?.errors" class="text-red-500 mx-auto">Invalid file type. Please select an image.</div>
+
+        <div *ngIf="fg.get('photo')?.errors?.['invalidImageSize']" class="text-red-500 mx-auto">
+            {{ imagesErrorMessage }}
+        </div>
+        <div *ngIf="fg.get('photo')?.errors?.['invalidImageFormat']" class="text-red-500 mx-auto">
+            {{ imagesErrorMessage }}
+        </div>
+
 
         <div class="flex flex-col">
             <input type="text" name="locationInput" formControlName="locationInput"
                 class="text-black rounded-t-md p-3 placeholder:text-center"
-                placeholder="Enter location if need find location faster">
+                placeholder="Click on map or enter location if need find location faster">
             <div id="map" class="h-96"></div>
         </div>
 
