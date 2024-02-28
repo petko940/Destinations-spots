@@ -1,4 +1,3 @@
-import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -8,6 +7,7 @@ import Overlay from 'ol/Overlay';
 import { FormControl, FormGroup } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,6 +16,8 @@ import { CreateDestinationService } from '../services/create-destination.service
     styleUrl: './create-destination.component.css'
 })
 export class CreateDestinationComponent implements OnInit {
+    isLoading: boolean = false; 
+
     map!: Map;
     markerOverlay!: Overlay;
 
@@ -33,7 +35,10 @@ export class CreateDestinationComponent implements OnInit {
     fg: FormGroup;
     searchInput: FormControl = new FormControl('');
 
-    constructor(private createDestinationService: CreateDestinationService) {
+    constructor(
+        private createDestinationService: CreateDestinationService ,
+        private router: Router
+        ) {
         this.fg = new FormGroup({
             name: new FormControl(''),
             description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure nostrum totam animi excepturi repellat dicta, deserunt quisquam quod! Officiis possimus voluptate eligendi rem ut minus aspernatur saepe, vero quod laboriosam?'),
@@ -165,6 +170,8 @@ export class CreateDestinationComponent implements OnInit {
     // }
 
     onSubmit() {
+        this.isLoading = true;
+
         const requestData = {
             name: this.fg.get('name')?.value,
             description: this.fg.get('description')?.value,
@@ -177,10 +184,12 @@ export class CreateDestinationComponent implements OnInit {
             .subscribe(response => {
                 console.log(response);
                 this.submitErrorMessage = '';
+                this.isLoading = false;
+                // this.router.navigate(['/']);
             }, error => {
                 console.error('Error:', error);
                 this.submitErrorMessage = 'An error occurred. Please try again later.';
-            }
-            );
+                this.isLoading = false;
+            });
     }
 }
