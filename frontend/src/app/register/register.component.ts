@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -11,14 +12,14 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
   form: FormGroup;
-
-  error : string = '';
+  error: string = '';
 
   constructor(
     private fb: FormBuilder,
     private http: HttpClient,
     private router: Router,
-    ) {
+    private authenticationService: AuthenticationService,
+  ) {
     this.form = this.fb.group({
       username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(6)]],
       password: ['', [Validators.required]],
@@ -33,24 +34,21 @@ export class RegisterComponent {
     if (password && confirmPassword && password !== confirmPassword) {
       return { 'mismatch': true };
     }
-
     return null;
   }
 
   onSubmit() {
     this.http.post('http://127.0.0.1:8000/api/register/', this.form.value).subscribe(
       (response) => {
-        console.log("Success!", response),
+        console.log("Success!", response);
+        this.authenticationService.setCurrentUser(response);
         this.router.navigate(['']);
       },
       (error) => {
         console.log("Error", error);
         this.error = error.error.username;
-        console.log(this.error);
-        
       }
-
     );
-    
+
   }
 }
