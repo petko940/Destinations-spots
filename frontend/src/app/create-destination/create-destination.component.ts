@@ -4,10 +4,12 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
 import { Router } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
+import { AuthenticationService } from '../services/authentication.service';
 
 
 @Component({
@@ -16,7 +18,7 @@ import { Router } from '@angular/router';
     styleUrl: './create-destination.component.css'
 })
 export class CreateDestinationComponent implements OnInit {
-    isLoading: boolean = false; 
+    isLoading: boolean = false;
 
     map!: Map;
     markerOverlay!: Overlay;
@@ -31,16 +33,20 @@ export class CreateDestinationComponent implements OnInit {
     // locationInput: string = "";
 
     submitErrorMessage: string = "";
+    imagesErrorMessage: string = "";
 
     fg: FormGroup;
     searchInput: FormControl = new FormControl('');
 
+    currentUser: any;
+
     constructor(
-        private createDestinationService: CreateDestinationService ,
-        private router: Router
-        ) {
+        private createDestinationService: CreateDestinationService,
+        private router: Router,
+        private authenticationService: AuthenticationService,
+    ) {
         this.fg = new FormGroup({
-            name: new FormControl(''),
+            name: new FormControl('', [Validators.required, Validators.minLength(3)]),
             description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure nostrum totam animi excepturi repellat dicta, deserunt quisquam quod! Officiis possimus voluptate eligendi rem ut minus aspernatur saepe, vero quod laboriosam?'),
             photo: new FormControl(''),
             latitude: new FormControl(''),
@@ -52,6 +58,8 @@ export class CreateDestinationComponent implements OnInit {
 
         this.latitude = this.fg.get('latitude')?.value;
         this.longitude = this.fg.get('longitude')?.value;
+
+        this.currentUser = this.authenticationService.getCurrentUser();
     }
 
     ngOnInit() {
@@ -128,9 +136,19 @@ export class CreateDestinationComponent implements OnInit {
         this.fg.get('photo')?.setValue(file);
         const fileType = file.type.split('/')[0];
 
+        const image: File = this.fg.get('photo')?.value;
+        const maxImageSize = 5 * 1024 * 1024;
         if (fileType !== 'image') {
             this.fg.get('photo')?.setErrors({ 'invalidImageFormat': true });
+            this.imagesErrorMessage = 'Invalid image format. Please upload an image file.';
+            return;
         }
+        if (image.size > maxImageSize) {
+            this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
+            this.imagesErrorMessage = 'Image size is too large. Please upload an image with a size less than 5MB.';
+            return;
+        }
+
     }
 
     searchLocation() {
@@ -172,15 +190,41 @@ export class CreateDestinationComponent implements OnInit {
     onSubmit() {
         this.isLoading = true;
 
-        const requestData = {
-            name: this.fg.get('name')?.value,
-            description: this.fg.get('description')?.value,
-            latitude: this.latitude,
-            longitude: this.longitude,
-            location: this.selectedLocation.location,
-        };
+        // console.log(this.latitude);
+        // console.log(this.fg.get('longitude')?.value);
+        // console.log(this.fg.get('longitude')?.value);
+        // console.log(this.currentUser);
 
-        this.createDestinationService.createDestination(requestData)
+        // const requestData = {
+        //     name: this.fg.get('name')?.value,
+        //     description: this.fg.get('description')?.value,
+        //     photo: this.fg.get('photo')?.value,
+        //     latitude: this.latitude,
+        //     longitude: this.longitude,
+        //     location: this.selectedLocation.location,
+        //     user: this.currentUser.id,
+        // };
+        // console.log(requestData);
+        // const image: File = this.fg.get('photo')?.value;
+        // // const maxImageSize = 5 * 1024 * 1024;
+        // const maxImageSize: number = 1 * 1024 * 1024;
+        // if (image.size > maxImageSize) {
+        //     this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
+        //     this.submitErrorMessage = 'Image size is too large. Please upload an image with a size less than 5MB.';
+        //     return;
+        // }
+
+
+        const formData = new FormData();
+        formData.append('name', this.fg.get('name')?.value);
+        formData.append('description', this.fg.get('description')?.value);
+        formData.append('latitude', String(this.latitude));
+        formData.append('longitude', String(this.longitude));
+        formData.append('location', this.selectedLocation.location);
+        formData.append('user', this.currentUser.id);
+        formData.append('photo', this.fg.get('photo')?.value);
+
+        this.createDestinationService.createDestination(formData)
             .subscribe(response => {
                 console.log(response);
                 this.submitErrorMessage = '';
@@ -188,7 +232,7 @@ export class CreateDestinationComponent implements OnInit {
                 // this.router.navigate(['/']);
             }, error => {
                 console.error('Error:', error);
-                this.submitErrorMessage = 'An error occurred. Please try again later.';
+                this.submitErrorMessage = 'An error occurred. Please try again.';
                 this.isLoading = false;
             });
     }
