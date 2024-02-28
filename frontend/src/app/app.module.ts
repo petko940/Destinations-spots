@@ -8,13 +8,17 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
+import { LoaderComponent } from './loader/loader.component';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavigationComponent,
     RegisterComponent,
-    CreateDestinationComponent
+    CreateDestinationComponent,
+    LoaderComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
