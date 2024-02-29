@@ -1,78 +1,50 @@
-<!-- <app-loader [loading]="true"></app-loader>
-
-<div class="w-7/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
-
-    <form class="flex flex-col gap-4 text-xl text-white p-7" [formGroup]="fg">
-        <h1 class="text-3xl mx-auto p-4">Create Destination Location</h1>
-
-        <div class="flex flex-col text-center w-1/2 mx-auto">
-            <label for="name">Destination name</label>
-            <input type="text" id="name" name="name" formControlName="name" class="text-black rounded-md p-3">
-        </div>
-
-        <div class="flex flex-col text-center">
-            <label for="description">Description</label>
-            <textarea id="description" name="description" formControlName="description"
-                class="text-black rounded-md p-2 min-h-40"></textarea>
-        </div>
-
-        <div class="flex justify-center items-center gap-4">
-            <label for="photo">Photo</label>
-            <input type="file" accept="image/*" id="photo" name="photo" (change)="onFileSelected($event)">
-        </div>
-        <div *ngIf="fg.get('photo')?.errors" class="text-red-500 mx-auto">Invalid file type. Please select an image.</div>
-
-        <div class="flex flex-col">
-            <input type="text" name="locationInput" formControlName="locationInput"
-                class="text-black rounded-t-md p-3 placeholder:text-center"
-                placeholder="Enter location if need find location faster">
-            <div id="map" class="h-96"></div>
-        </div>
-
-        <p>{{ selectedLocation.location }}</p>
-
-        <div class="mx-auto">
-            <button (click)="onSubmit()" class="rounded-md bg-blue-50 text-black p-3">Create</button>
-        </div>
-
-        <div *ngIf="submitErrorMessage" class="text-red-500 text-2xl">{{ submitErrorMessage }}</div>
-
-    </form>
-
-</div> -->
-
 <app-loader [loading]="isLoading"></app-loader>
 
 <div class="w-7/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
 
     <form [formGroup]="fg" class="flex flex-col gap-4 text-xl text-white p-7">
-        <h1 class="text-3xl mx-auto p-4">Create Destination Location</h1>
-    
+        <h1 class="text-3xl mx-auto p-4">
+            Create Destination Location
+        </h1>
+
         <div class="flex flex-col text-center w-1/2 mx-auto">
             <label for="name">Destination name</label>
-            <input type="text" id="name" name="name" formControlName="name" class="text-black rounded-md p-3">
-            <div *ngIf="fg.get('name')?.invalid && fg.get('name')?.dirty">
-                <small *ngIf="fg.get('name')?.errors?.['required']" class="text-red-600">
-                    Destination name is required
-                </small>
-                <small *ngIf="fg.get('name')?.errors?.['minlength']" class="text-red-600">
-                    Description name must be at least 3 characters long
-                </small>
+            <input type="text" id="name" name="name" formControlName="name"
+                class="text-black rounded-md p-3 placeholder:text-center" placeholder="Destination name"
+                autocomplete="off">
+        </div>
+        <div *ngIf="fg.get('name')?.invalid && fg.get('name')?.dirty" class="text-red-500 mx-auto">
+            <div *ngIf="fg.get('name')?.errors?.['required']">
+                Destination name is required
             </div>
-    
+            <div *ngIf="fg.get('name')?.errors?.['minlength']">
+                Destination name must be at least 3 characters long
+            </div>
         </div>
 
         <div class="flex flex-col text-center">
             <label for="description">Description</label>
             <textarea id="description" name="description" formControlName="description"
-                class="text-black rounded-md p-2 min-h-40"></textarea>
+                class="text-black rounded-md p-2 min-h-40 placeholder:text-center"
+                placeholder="Destination description">
+            </textarea>
+        </div>
+        <div *ngIf="fg.get('description')?.invalid && fg.get('description')?.dirty" class="text-red-500 mx-auto">
+            <div *ngIf="fg.get('description')?.errors?.['required']">
+                Destination description is required
+            </div>
+            <div *ngIf="fg.get('description')?.errors?.['minlength']">
+                Description description must be at least 10 characters long
+            </div>
         </div>
 
         <div class="flex justify-center items-center gap-4">
             <label for="photo">Photo</label>
-            <input type="file" accept="image/*" id="photo" name="photo" (change)="onFileSelected($event)">
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" id="photo" name="photo">
+            <div *ngIf="selectedImage" class="w-1/3">
+                <img [src]="selectedImage" alt="" class="w-1/2 h-auto">
+            </div>
         </div>
-
         <div *ngIf="fg.get('photo')?.errors?.['invalidImageSize']" class="text-red-500 mx-auto">
             {{ imagesErrorMessage }}
         </div>
@@ -80,18 +52,20 @@
             {{ imagesErrorMessage }}
         </div>
 
-
         <div class="flex flex-col">
             <input type="text" name="locationInput" formControlName="locationInput"
                 class="text-black rounded-t-md p-3 placeholder:text-center"
-                placeholder="Click on map or enter location if need find location faster">
+                placeholder="Click on map or enter location if need find location faster" autocomplete="off">
             <div id="map" class="h-96"></div>
         </div>
 
         <p>{{ selectedLocation.location }}</p>
 
         <div class="mx-auto">
-            <button (click)="onSubmit()" class="rounded-md bg-blue-50 text-black p-3">Create</button>
+            <button (click)="onSubmit()" [disabled]="fg.invalid || selectedLocation.location === '' || selectedLocation.location === 'Unknown! Choose another location!'" type="submit"
+                class="rounded-md bg-white text-black p-3 disabled:bg-gray-400">
+                Create
+            </button>
         </div>
 
         <div *ngIf="submitErrorMessage" class="text-red-500 text-2xl mx-auto">{{ submitErrorMessage }}</div>
