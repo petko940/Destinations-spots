@@ -16,7 +16,7 @@ class CreateDestination(generics.CreateAPIView):
         location = request.data.get('location', None)
         user_id = request.data.get('user', None)
 
-        if any([not name, not description, not location, not user_id]):
+        if any([len(name) < 3, len(description) < 10, not location, 'Unknown' in location]):
             return Response({'error': 'Incomplete data provided'}, status=status.HTTP_400_BAD_REQUEST)
 
         if request.FILES.get('photo'):
