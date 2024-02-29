@@ -62,8 +62,9 @@
         <p>{{ selectedLocation.location }}</p>
 
         <div class="mx-auto">
-            <button (click)="onSubmit()" [disabled]="fg.invalid || selectedLocation.location === '' || selectedLocation.location === 'Unknown! Choose another location!'" type="submit"
-                class="rounded-md bg-white text-black p-3 disabled:bg-gray-400">
+            <button (click)="onSubmit()"
+                [disabled]="fg.invalid || !selectedLocation.location || selectedLocation.location === 'Unknown! Choose another location!'"
+                type="submit" class="rounded-md bg-white text-black p-3 disabled:bg-gray-400">
                 Create
             </button>
         </div>
