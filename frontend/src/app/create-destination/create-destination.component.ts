@@ -97,6 +97,7 @@ export class CreateDestinationComponent implements OnInit {
         }
 
         this.map.on('click', (event) => {
+            this.isLoading = true;
             const clickedCoordinate = event.coordinate;
             const lon = clickedCoordinate[0];
             const lat = clickedCoordinate[1];
@@ -116,6 +117,7 @@ export class CreateDestinationComponent implements OnInit {
 
             this.createDestinationService.getLocationCoordinates(this.latitude, this.longitude)
                 .subscribe((response: any) => {
+                    this.isLoading = false;
                     const location = this.createDestinationService.formatLocation(response);
                     this.selectedLocation = {
                         latitude: this.latitude,
