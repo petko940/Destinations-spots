@@ -23,14 +23,12 @@ export class CreateDestinationComponent implements OnInit {
     map!: Map;
     markerOverlay!: Overlay;
 
-    // name: string = "";
-    // description: string = "";
     latitude: number | undefined;
     longitude: number | undefined;
     selectedLocation: any = {};
+
     photo: File | null = null;
-    // fileTypeErrorMessage: string = "";
-    // locationInput: string = "";
+    selectedImage: string | ArrayBuffer | null = null;
 
     submitErrorMessage: string = "";
     imagesErrorMessage: string = "";
@@ -47,7 +45,7 @@ export class CreateDestinationComponent implements OnInit {
     ) {
         this.fg = new FormGroup({
             name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure nostrum totam animi excepturi repellat dicta, deserunt quisquam quod! Officiis possimus voluptate eligendi rem ut minus aspernatur saepe, vero quod laboriosam?'),
+            description: new FormControl('', [Validators.required, Validators.minLength(10)]),
             photo: new FormControl(''),
             latitude: new FormControl(''),
             longitude: new FormControl(''),
@@ -132,21 +130,34 @@ export class CreateDestinationComponent implements OnInit {
     }
 
     onFileSelected(event: any) {
-        const file: File = event.target.files[0];
-        this.fg.get('photo')?.setValue(file);
-        const fileType = file.type.split('/')[0];
+        const file: any = event.target.files[0];
 
-        const image: File = this.fg.get('photo')?.value;
-        const maxImageSize = 5 * 1024 * 1024;
-        if (fileType !== 'image') {
-            this.fg.get('photo')?.setErrors({ 'invalidImageFormat': true });
-            this.imagesErrorMessage = 'Invalid image format. Please upload an image file.';
-            return;
-        }
-        if (image.size > maxImageSize) {
-            this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
-            this.imagesErrorMessage = 'Image size is too large. Please upload an image with a size less than 5MB.';
-            return;
+        if (file) {
+            this.fg.get('photo')?.setValue(file);
+            const fileType: string = file.type.split('/')[0];
+
+            const image: File = this.fg.get('photo')?.value;
+            const maxImageSize = 5 * 1024 * 1024;
+            if (fileType !== 'image') {
+                this.selectedImage = null;
+                this.fg.get('photo')?.setErrors({ 'invalidImageFormat': true });
+                this.imagesErrorMessage = 'Invalid image format. Please upload an image file.';
+                return;
+            }
+            if (image.size > maxImageSize) {
+                this.selectedImage = null;
+                this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
+                this.imagesErrorMessage = 'Image size is too large. Please upload an image with a size less than 5MB.';
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.selectedImage = reader.result;
+            };
+        } else {
+            this.selectedImage = null;
         }
 
     }
@@ -183,37 +194,12 @@ export class CreateDestinationComponent implements OnInit {
             });
     }
 
-    // isButtonDisabled(): boolean {
-    //     return !this.selectedLocation.location || this.selectedLocation.location === 'Unknown! Choose another location!';
-    // }
+    isButtonDisabled(): boolean {
+        return !this.selectedLocation.location || this.selectedLocation.location === 'Unknown! Choose another location!';
+    }
 
     onSubmit() {
         this.isLoading = true;
-
-        // console.log(this.latitude);
-        // console.log(this.fg.get('longitude')?.value);
-        // console.log(this.fg.get('longitude')?.value);
-        // console.log(this.currentUser);
-
-        // const requestData = {
-        //     name: this.fg.get('name')?.value,
-        //     description: this.fg.get('description')?.value,
-        //     photo: this.fg.get('photo')?.value,
-        //     latitude: this.latitude,
-        //     longitude: this.longitude,
-        //     location: this.selectedLocation.location,
-        //     user: this.currentUser.id,
-        // };
-        // console.log(requestData);
-        // const image: File = this.fg.get('photo')?.value;
-        // // const maxImageSize = 5 * 1024 * 1024;
-        // const maxImageSize: number = 1 * 1024 * 1024;
-        // if (image.size > maxImageSize) {
-        //     this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
-        //     this.submitErrorMessage = 'Image size is too large. Please upload an image with a size less than 5MB.';
-        //     return;
-        // }
-
 
         const formData = new FormData();
         formData.append('name', this.fg.get('name')?.value);
@@ -229,7 +215,7 @@ export class CreateDestinationComponent implements OnInit {
                 console.log(response);
                 this.submitErrorMessage = '';
                 this.isLoading = false;
-                // this.router.navigate(['/']);
+                this.router.navigate(['/']);
             }, error => {
                 console.error('Error:', error);
                 this.submitErrorMessage = 'An error occurred. Please try again.';
