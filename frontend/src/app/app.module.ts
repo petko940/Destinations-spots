@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CreateDestinationComponent } from './create-destination/create-destination.component';
 import { LoaderComponent } from './loader/loader.component';
 import { AboutComponent } from './about/about.component';
+import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { AboutComponent } from './about/about.component';
     RegisterComponent,
     CreateDestinationComponent,
     LoaderComponent,
-    AboutComponent
+    AboutComponent,
+    AllDestinationsComponent
   ],
   imports: [
     BrowserModule,
