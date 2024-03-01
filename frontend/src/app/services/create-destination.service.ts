@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
@@ -9,12 +10,12 @@ export class CreateDestinationService {
   constructor(private http: HttpClient) { }
 
   getLocationCoordinates(latitude: number, longitude: number) {
-    const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`;
+    const apiUrl: string = environment.getLocationCoordinates + `lat=${latitude}&lon=${longitude}`;
     return this.http.get(apiUrl);
   }
 
   formatLocation(response: any): string {
-    let location = '';
+    let location: string = '';
 
     if (response.address) {
       if (response.address.village) {
@@ -46,12 +47,13 @@ export class CreateDestinationService {
   }
 
   searchLocation(locationInput: string) {
-    const apiUrl = `https://nominatim.openstreetmap.org/search?format=json&q=${locationInput}`;
+    const apiUrl: string = environment.searchLocationUrl + locationInput;
     return this.http.get(apiUrl);
   }
 
   createDestination(data: any) {
-    return this.http.post('http://127.0.0.1:8000/api/create-destination/', data);
+    const apiUrl: string = environment.dbApiUrl;
+    return this.http.post(`${apiUrl}create-destination/`, data);
   }
 
 }

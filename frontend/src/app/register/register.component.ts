@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
-
 
 @Component({
   selector: 'app-register',
@@ -16,7 +14,6 @@ export class RegisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private http: HttpClient,
     private router: Router,
     private authenticationService: AuthenticationService,
   ) {
@@ -38,17 +35,16 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    this.http.post('http://127.0.0.1:8000/api/register/', this.form.value).subscribe(
-      (response) => {
-        console.log("Success!", response);
+    this.authenticationService.register(this.form.value)
+      .subscribe((response) => {
         this.authenticationService.setCurrentUser(response);
         this.router.navigate(['']);
       },
-      (error) => {
-        console.log("Error", error);
-        this.error = error.error.username;
-      }
-    );
+        (error) => {
+          console.log("Error", error);
+          this.error = error.error.username;
+        }
+      );
 
   }
 }
