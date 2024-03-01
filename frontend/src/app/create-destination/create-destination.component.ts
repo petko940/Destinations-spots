@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
 import { AuthenticationService } from '../services/authentication.service';
 
 
@@ -23,8 +22,8 @@ export class CreateDestinationComponent implements OnInit {
     map!: Map;
     markerOverlay!: Overlay;
 
-    latitude: number | undefined;
-    longitude: number | undefined;
+    latitude: number;
+    longitude: number;
     selectedLocation: any = {};
 
     photo: File | null = null;
@@ -44,8 +43,8 @@ export class CreateDestinationComponent implements OnInit {
         private authenticationService: AuthenticationService,
     ) {
         this.fg = new FormGroup({
-            name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            description: new FormControl('', [Validators.required, Validators.minLength(10)]),
+            name: new FormControl('test123', [Validators.required, Validators.minLength(3)]),
+            description: new FormControl('Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempore laudantium culpa accusantium incidunt voluptatum inventore totam quis rem sint natus. Voluptatem, quae! Hic, nulla sint reprehenderit fuga nam totam illo.', [Validators.required, Validators.minLength(10)]),
             photo: new FormControl(''),
             latitude: new FormControl(''),
             longitude: new FormControl(''),
@@ -132,7 +131,7 @@ export class CreateDestinationComponent implements OnInit {
     }
 
     onFileSelected(event: any) {
-        const file: any = event.target.files[0];
+        const file: File | null = event.target.files[0];
 
         if (file) {
             this.fg.get('photo')?.setValue(file);
@@ -209,8 +208,8 @@ export class CreateDestinationComponent implements OnInit {
         formData.append('latitude', String(this.latitude));
         formData.append('longitude', String(this.longitude));
         formData.append('location', this.selectedLocation.location);
-        formData.append('user', this.currentUser.id);
         formData.append('photo', this.fg.get('photo')?.value);
+        formData.append('user', this.currentUser.id);
 
         this.createDestinationService.createDestination(formData)
             .subscribe(response => {
