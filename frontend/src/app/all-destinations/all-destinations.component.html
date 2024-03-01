@@ -1,0 +1,7 @@
+<app-loader [loading]="isLoading" />
+
+<input (click)="toggleShowMyDestinations()" type="checkbox" name="" id=""> click
+
+<div *ngFor="let destination of allDestinations">
+    <img src="{{destination.photo}}" alt="">
+</div>
