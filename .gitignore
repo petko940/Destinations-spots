@@ -202,3 +202,4 @@ cython_debug/
 .idea
 frontend/src/environments/environment.ts
 frontend/src/environments/environment.development.ts
+backend/media/
