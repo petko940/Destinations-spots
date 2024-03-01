@@ -200,3 +200,5 @@ cython_debug/
 /frontend/.DS_Store
 /frontend/Thumbs.db
 .idea
+frontend/src/environments/environment.ts
+frontend/src/environments/environment.development.ts
