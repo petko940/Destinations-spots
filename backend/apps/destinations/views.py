@@ -34,3 +34,8 @@ class CreateDestination(generics.CreateAPIView):
             return Response({'success': 'Destination saved successfully'}, status=status.HTTP_201_CREATED)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class AllDestinations(generics.ListAPIView):
+    serializer_class = DestinationSerializer
+    queryset = Destination.objects.all()
