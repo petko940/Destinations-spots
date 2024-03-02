@@ -138,13 +138,14 @@ export class CreateDestinationComponent implements OnInit {
             const fileType: string = file.type.split('/')[0];
 
             const image: File = this.fg.get('photo')?.value;
-            const maxImageSize = 5 * 1024 * 1024;
             if (fileType !== 'image') {
                 this.selectedImage = null;
                 this.fg.get('photo')?.setErrors({ 'invalidImageFormat': true });
                 this.imagesErrorMessage = 'Invalid image format. Please upload an image file.';
                 return;
             }
+
+            const maxImageSize = 5 * 1024 * 1024;
             if (image.size > maxImageSize) {
                 this.selectedImage = null;
                 this.fg.get('photo')?.setErrors({ 'invalidImageSize': true });
@@ -202,6 +203,11 @@ export class CreateDestinationComponent implements OnInit {
     onSubmit() {
         this.isLoading = true;
 
+        if (!this.selectedImage) {
+            const noImageAvailable = './assets/no-image-available.jpg'
+            this.selectedImage = noImageAvailable;
+        }
+
         const formData = new FormData();
         formData.append('name', this.fg.get('name')?.value);
         formData.append('description', this.fg.get('description')?.value);
@@ -216,7 +222,7 @@ export class CreateDestinationComponent implements OnInit {
                 console.log(response);
                 this.submitErrorMessage = '';
                 this.isLoading = false;
-                this.router.navigate(['/']);
+                // this.router.navigate(['/']);
             }, error => {
                 console.error('Error:', error);
                 this.submitErrorMessage = 'An error occurred. Please try again.';
