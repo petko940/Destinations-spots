@@ -2,6 +2,39 @@
 
 <input (click)="toggleShowMyDestinations()" type="checkbox" name="" id=""> click
 
-<div *ngFor="let destination of allDestinations">
-    <img src="{{destination.photo}}" alt="">
+<div class="flex justify-center">
+    <div class="flex flex-col gap-8 pl-16 p-3 text-white w-1/2">
+        <div *ngFor="let destination of allDestinations; let i = index">
+            <div *ngIf="i % 2 === 0"
+                class="flex flex-col text-center border-white border-2 rounded p-7 backdrop-blur-md">
+      
+                <p class="text-3xl pb-5">{{ destination.name }}</p>
+
+                <div *ngIf="destination.photo; else noPhoto">
+                    <img class="w-5/6 max-h-svh mx-auto" src="{{ destination.photo }}" alt="">
+                </div>
+                <ng-template #noPhoto>
+                    <img class="w-5/6 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="flex flex-col gap-8 pr-20 p-3 text-white w-1/2">
+        <div *ngFor="let destination of allDestinations; let i = index">
+            <div *ngIf="i % 2 !== 0"
+                class="flex flex-col text-center border-white border-2 rounded p-7 backdrop-blur-md">
+
+                <p class="text-3xl pb-5">{{ destination.name }}</p>
+                <div *ngIf="destination.photo; else noPhoto">
+                    <img class="w-5/6 max-h-svh mx-auto" src="{{ destination.photo }}" alt="">
+                </div>
+                <ng-template #noPhoto>
+                    <img class="w-5/6 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
 </div>

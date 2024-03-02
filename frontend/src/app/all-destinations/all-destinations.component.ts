@@ -18,7 +18,7 @@ export class AllDestinationsComponent implements OnInit {
         this.http.get('http://127.0.0.1:8000/api/all-destinations/')
             .subscribe((response: any) => {
                 this.isLoading = false
-                this.allDestinations = response;
+                this.allDestinations = response.sort((a: Destination, b: Destination) => b.id - a.id);;
                 console.log(this.allDestinations);
             }, error => {
                 this.isLoading = false
