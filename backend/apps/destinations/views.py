@@ -39,3 +39,13 @@ class CreateDestination(generics.CreateAPIView):
 class AllDestinations(generics.ListAPIView):
     serializer_class = DestinationSerializer
     queryset = Destination.objects.all()
+
+
+class DetailDestination(generics.RetrieveAPIView):
+    serializer_class = DestinationSerializer
+    queryset = Destination.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
