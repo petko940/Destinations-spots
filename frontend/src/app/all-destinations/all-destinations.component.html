@@ -1,10 +1,12 @@
 <app-loader [loading]="isLoading" />
 
-<input (click)="toggleShowMyDestinations()" type="checkbox" name="" id=""> click
+<div class="flex justify-center">
+<input (click)="toggleShowMyDestinations()" type="checkbox" name="" id="" class="w-6 h-6"> click
+</div>
 
 <div class="flex justify-center">
     <div class="flex flex-col gap-8 pl-16 p-3 text-white w-1/2">
-        <div *ngFor="let destination of allDestinations; let i = index">
+        <ng-container *ngFor="let destination of allDestinations; let i = index">
             <div *ngIf="i % 2 === 0"
                 class="flex flex-col text-center border-white border-2 rounded p-7 backdrop-blur-md">
       
@@ -18,11 +20,11 @@
                 </ng-template>
 
             </div>
-        </div>
+        </ng-container>
     </div>
 
-    <div class="flex flex-col gap-8 pr-20 p-3 text-white w-1/2">
-        <div *ngFor="let destination of allDestinations; let i = index">
+    <div class="flex flex-col gap-8 pr-16 p-3 text-white w-1/2">
+        <ng-container *ngFor="let destination of allDestinations; let i = index">
             <div *ngIf="i % 2 !== 0"
                 class="flex flex-col text-center border-white border-2 rounded p-7 backdrop-blur-md">
 
@@ -35,6 +37,6 @@
                 </ng-template>
 
             </div>
-        </div>
+        </ng-container>
     </div>
 </div>
