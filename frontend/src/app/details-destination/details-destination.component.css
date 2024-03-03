@@ -1,0 +1,16 @@
+::ng-deep .ol-zoom button.ol-zoom-in,
+::ng-deep .ol-zoom button.ol-zoom-out {
+    padding: 3px 8px !important;
+    border: 1px solid white;
+    background: #e9e9e9;
+    color: #000;
+    cursor: pointer;
+}
+
+::ng-deep .ol-zoom.ol-unselectable.ol-control {
+    width: 60px !important;
+}
+
+::ng-deep .ol-rotate.ol-unselectable.ol-control {
+    display: none;
+}

@@ -1,1 +1,14 @@
-<p>details-destination works!</p>
+<app-loader [loading]="isLoading" />
+
+<div *ngIf="destination"  class="w-7/12 mx-auto border-white border-2 p-10 m-5">
+    <h1 class="text-3xl text-amber-400 text-center pb-10">
+        {{ destination.name }}
+    </h1>
+    <h2 class="text-2xl text-stone-200 text-center">
+        {{ destination.description }}
+    </h2>
+    
+    <div id="map" class="h-96"></div>
+
+</div>
+
