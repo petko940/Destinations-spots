@@ -12,6 +12,7 @@ import { LoaderComponent } from './shared/loader/loader.component';
 import { AboutComponent } from './about/about.component';
 import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
 import { SharedModule } from './shared/shared.module';
+import { DetailsDestinationComponent } from './details-destination/details-destination.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { SharedModule } from './shared/shared.module';
     CreateDestinationComponent,
     AboutComponent,
     AllDestinationsComponent,
+    DetailsDestinationComponent,
   ],
   imports: [
     BrowserModule,
