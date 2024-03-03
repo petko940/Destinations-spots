@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { Destination } from '../types/destination';
 import { AuthenticationService } from '../services/authentication.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-all-destinations',
@@ -17,13 +18,14 @@ export class AllDestinationsComponent implements OnInit {
 
     constructor(
         private http: HttpClient,
-        private authenticationService: AuthenticationService
+        private authenticationService: AuthenticationService,
+        private router: Router,
     ) { }
 
     ngOnInit() {
         this.http.get('http://127.0.0.1:8000/api/all-destinations/')
             .subscribe((response: any) => {
-                this.isLoading = false
+                this.isLoading = false;
                 this.allDestinations = response.sort((a: Destination, b: Destination) => b.id - a.id);
                 this.originalDestinations  = [...this.allDestinations];
             }, error => {
@@ -42,6 +44,10 @@ export class AllDestinationsComponent implements OnInit {
             this.allDestinations = [...this.originalDestinations]; 
         }
 
+    }
+
+    redirectToDetails(destination: Destination) {
+        this.router.navigate(['/destination', destination.id]);
     }
 
 }

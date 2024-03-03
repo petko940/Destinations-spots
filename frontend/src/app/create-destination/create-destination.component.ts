@@ -69,7 +69,7 @@ export class CreateDestinationComponent implements OnInit {
             });
     }
 
-    private initMap() {
+    initMap() {
         this.map = new Map({
             target: 'map',
             layers: [
@@ -100,7 +100,7 @@ export class CreateDestinationComponent implements OnInit {
             const clickedCoordinate = event.coordinate;
             const lon = clickedCoordinate[0];
             const lat = clickedCoordinate[1];
-
+              
             this.latitude = lat;
             this.longitude = lon;
 
