@@ -10,8 +10,15 @@ class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
 
+    objects = models.Manager()
+
 
 class Rating(models.Model):
     destination = models.ForeignKey('destinations.Destination', on_delete=models.CASCADE, related_name='ratings')
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     stars = models.IntegerField(default=0, choices=[(i, i) for i in range(1, 6)])
+
+    objects = models.Manager()
+
+    class Meta:
+        unique_together = ('user', 'destination')
