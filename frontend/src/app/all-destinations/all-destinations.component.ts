@@ -14,7 +14,7 @@ export class AllDestinationsComponent implements OnInit {
     showMyDestinations: boolean = false;
     allDestinations: Destination[] = [];
     myDestinations: Destination[] = [];
-    originalDestinations : Destination[] = [];
+    copyAllDestinations : Destination[] = [];
 
     constructor(
         private http: HttpClient,
@@ -27,7 +27,7 @@ export class AllDestinationsComponent implements OnInit {
             .subscribe((response: any) => {
                 this.isLoading = false;
                 this.allDestinations = response.sort((a: Destination, b: Destination) => b.id - a.id);
-                this.originalDestinations  = [...this.allDestinations];
+                this.copyAllDestinations  = [...this.allDestinations];
             }, error => {
                 this.isLoading = false
                 console.log(error);
@@ -41,7 +41,7 @@ export class AllDestinationsComponent implements OnInit {
             this.myDestinations = this.allDestinations.filter(destination => destination.user == this.authenticationService.getCurrentUser().id);
             this.allDestinations = [...this.myDestinations]; 
         } else {
-            this.allDestinations = [...this.originalDestinations]; 
+            this.allDestinations = [...this.copyAllDestinations]; 
         }
 
     }
