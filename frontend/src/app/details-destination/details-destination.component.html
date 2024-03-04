@@ -1,14 +1,24 @@
 <app-loader [loading]="isLoading" />
 
-<div *ngIf="destination"  class="w-7/12 mx-auto border-white border-2 p-10 m-5">
-    <h1 class="text-3xl text-amber-400 text-center pb-10">
+<div *ngIf="destination" class="w-7/12 mx-auto border-white border-2 p-10 m-5">
+    <h1 class="text-3xl text-cyan-300 text-center pb-3">
         {{ destination.name }}
     </h1>
-    <h2 class="text-2xl text-stone-200 text-center">
+    <div class="flex justify-center text-4xl pb-2">
+        <div *ngFor="let _ of rating; let i = index" (click)="updateRating(i + 1)">
+            <i class="fa-solid fa-star text-yellow-500"></i>
+        </div>
+        <div *ngFor="let _ of remainingStars; let i = index" (click)="updateRating(i + rating.length + 1)">
+            <i class="fa-regular fa-star text-yellow-500"></i>
+        </div>
+    </div>
+    <small class="text-white flex justify-center pb-10">You can rate this destination</small>
+
+    <h2 class="text-2xl text-stone-200 text-center w-5/6 mx-auto pb-5">
         {{ destination.description }}
     </h2>
-    
+
     <div id="map" class="h-96"></div>
 
-</div>
 
+</div>
