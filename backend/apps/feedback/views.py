@@ -17,12 +17,6 @@ class DestinationRating(generics.ListCreateAPIView):
         queryset = Rating.objects.filter(destination_id=destination_id)
         return queryset
 
-    # def post(self, request, *args, **kwargs):
-    #     destination_id = self.kwargs.get('destination_id')
-    #     destination = Destination.objects.get(id=destination_id)
-    #     request.data['destination'] = destination.id
-    #     request.data['user'] = request.data['user']['id']
-    #     return super().post(request, *args, **kwargs)
     def post(self, request, *args, **kwargs):
         destination_id = self.kwargs.get('destination_id')
         destination = Destination.objects.get(id=destination_id)
@@ -43,3 +37,24 @@ class DestinationRating(generics.ListCreateAPIView):
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+
+class DeleteRating(generics.DestroyAPIView):
+    serializer_class = RatingSerializer
+    lookup_field = 'destination_id'
+
+    def get_queryset(self, *args, **kwargs):
+        destination_id = self.kwargs.get('destination_id')
+        user_id = self.request.query_params.get('user')
+        queryset = Rating.objects.filter(
+            destination_id=destination_id,
+            user_id=user_id)
+        return queryset
+
+    def delete(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response("Rating not found for the user and destination.", status=status.HTTP_404_NOT_FOUND)
+
+        rating_instance = queryset.first()
+        rating_instance.delete()
+        return Response("Rating deleted successfully.", status=status.HTTP_204_NO_CONTENT)
