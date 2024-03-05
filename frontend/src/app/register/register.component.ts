@@ -38,7 +38,7 @@ export class RegisterComponent {
     this.authenticationService.register(this.form.value)
       .subscribe((response) => {
         this.authenticationService.setCurrentUser(response);
-        this.router.navigate(['']);
+        this.router.navigate(['/']);
       },
         (error) => {
           console.log("Error", error);
