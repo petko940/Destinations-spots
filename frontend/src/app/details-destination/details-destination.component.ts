@@ -25,7 +25,9 @@ export class DetailsDestinationComponent implements OnInit {
     remainingStars!: number[];
     destinationId!: number;
     allRatings!: Rating[];
-
+    allRatingsCount!: number;
+    averageRating!: number;
+    
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
@@ -92,12 +94,13 @@ export class DetailsDestinationComponent implements OnInit {
         this.http.get<Rating[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/rating')
             .subscribe(ratingData => {
                 this.allRatings = ratingData;
-                
-                const sumStars = ratingData.reduce((sum, rating) => sum + rating.stars, 0);
-                const averageStars = sumStars / ratingData.length;
-                
-                this.rating = Array(Math.floor(averageStars)).fill(0);
-                this.remainingStars = Array(5 - Math.floor(averageStars)).fill(0);
+                this.allRatingsCount = this.allRatings.length;
+
+                const sumStars = this.allRatings.reduce((sum, rating) => sum + rating.stars, 0);
+                this.averageRating = sumStars / this.allRatings.length;
+
+                this.rating = Array(Math.round(this.averageRating)).fill(0);
+                this.remainingStars = Array(5 - Math.round(this.averageRating)).fill(0);
 
             }, error => {
                 console.log(error);
@@ -113,31 +116,27 @@ export class DetailsDestinationComponent implements OnInit {
             return;
         }
 
-        const payload = {
-            stars: rating,
-            user: userId
-        };
+        const existingRating = this.allRatings.find(r => r.user === userId['id']);
 
-        this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating', payload)
-            .subscribe(response => {                
-                const userExists = this.allRatings.some(rating => rating.user === userId);
-                
-                let newRatingLength 
-                if (!userExists) {
-                    newRatingLength = this.rating.length + 1;
-                } else {
-                    newRatingLength = this.rating.length
-                }
-
-                const sumStars = this.rating.reduce((sum, _) => sum + 1, rating);
-                const averageStars = sumStars / newRatingLength;
-                                
-                this.rating = Array(Math.floor(averageStars)).fill(0);
-                this.remainingStars = Array(5 - Math.floor(averageStars)).fill(0);
-
-            }, error => {
-                console.error('Error updating rating:', error);
-            });
+        if (existingRating && existingRating.stars === rating) {
+            this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId.id}`)
+                .subscribe(response => {
+                    this.loadRating();
+                }, error => {
+                    console.error('Error deleting rating:', error);
+                });
+        } else {
+            const payload = {
+                stars: rating,
+                user: userId
+            };
+            this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating', payload)
+                .subscribe(response => {
+                    this.loadRating();
+                }, error => {
+                    console.error('Error updating rating:', error);
+                });
+        }
     }
 
 }
