@@ -19,9 +19,14 @@
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
                 </ng-template>
 
-                <!-- <div *ngFor="let rating of destination.ratings; let i = index">
-                    <i class="fa-solid fa-star"></i>
-                </div> -->
+                <div class="flex justify-center gap-1 pt-2 text-3xl text-yellow-500">
+                    <div *ngFor="let rating of filledStarsMap[destination.id]">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div *ngFor="let rating of remainingStarsMap[destination.id]">
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                </div>
 
                 <button (click)="redirectToDetails(destination)"
                     class="mt-5 text-2xl bg-cyan-600 w-36 p-2 mx-auto cursor-pointer rounded-xl">
@@ -43,6 +48,15 @@
                 <ng-template #noPhoto>
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
                 </ng-template>
+
+                <div class="flex justify-center gap-1 pt-2 text-3xl text-yellow-500">
+                    <div *ngFor="let rating of filledStarsMap[destination.id]">
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <div *ngFor="let rating of remainingStarsMap[destination.id]">
+                        <i class="fa-regular fa-star"></i>
+                    </div>
+                </div>
 
                 <button (click)="redirectToDetails(destination)"
                     class="mt-5 text-2xl bg-cyan-600 w-36 p-2 mx-auto cursor-pointer rounded-xl">
