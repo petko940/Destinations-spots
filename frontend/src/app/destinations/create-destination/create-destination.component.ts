@@ -6,7 +6,7 @@ import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { CreateDestinationService } from '../../services/create-destination.service';
+import { CreateDestinationService } from '../services/create-destination.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
 

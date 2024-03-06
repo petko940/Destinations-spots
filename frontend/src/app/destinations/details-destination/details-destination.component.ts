@@ -10,6 +10,7 @@ import Overlay from 'ol/Overlay';
 import { Rating } from '../../types/rating';
 import { Comment } from '../../types/comment';
 import { AuthenticationService } from '../../services/authentication.service';
+import { RatingService } from '../services/rating.service';
 
 
 @Component({
@@ -35,6 +36,7 @@ export class DetailsDestinationComponent implements OnInit {
         private http: HttpClient,
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
+        private ratingService: RatingService,
     ) { }
 
     ngOnInit(): void {
@@ -95,7 +97,7 @@ export class DetailsDestinationComponent implements OnInit {
     }
 
     fetchRating(): void {
-        this.http.get<Rating[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/rating/')
+        this.ratingService.fetchRating(this.destinationId)
             .subscribe(ratingData => {
                 this.allRatings = ratingData;
                 this.allRatingsCount = this.allRatings.length;
