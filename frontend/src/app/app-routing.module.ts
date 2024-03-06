@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { RegisterComponent } from './register/register.component';
-import { CreateDestinationComponent } from './create-destination/create-destination.component';
+import { CreateDestinationComponent } from './destinations/create-destination/create-destination.component';
 import { AboutComponent } from './about/about.component';
-import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
 import { DetailsDestinationComponent } from './details-destination/details-destination.component';
+import { AllDestinationsComponent } from './destinations/all-destinations/all-destinations.component';
 
 const routes: Routes = [
   { path: "about", component: AboutComponent },
