@@ -6,30 +6,28 @@ import { AppComponent } from './app.component';
 import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { CreateDestinationComponent } from './create-destination/create-destination.component';
 import { AboutComponent } from './about/about.component';
-import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
-import { SharedModule } from './shared/shared.module';
 import { DetailsDestinationComponent } from './details-destination/details-destination.component';
 import { CoreModule } from './core/core.module';
+import { DestinationsModule } from './destinations/destinations.module';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     RegisterComponent,
-    CreateDestinationComponent,
     AboutComponent,
-    AllDestinationsComponent,
     DetailsDestinationComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     CoreModule,
     SharedModule,
+    DestinationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
