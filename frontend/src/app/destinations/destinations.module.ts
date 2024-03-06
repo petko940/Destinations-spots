@@ -4,6 +4,7 @@ import { CreateDestinationComponent } from './create-destination/create-destinat
 import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
+import { DetailsDestinationComponent } from './details-destination/details-destination.component';
 
 
 
@@ -11,6 +12,7 @@ import { AllDestinationsComponent } from './all-destinations/all-destinations.co
   declarations: [
     CreateDestinationComponent,
     AllDestinationsComponent,
+    DetailsDestinationComponent,
   ],
   imports: [
     CommonModule,
@@ -20,6 +22,7 @@ import { AllDestinationsComponent } from './all-destinations/all-destinations.co
   exports: [
     CreateDestinationComponent,
     AllDestinationsComponent,
+    DetailsDestinationComponent,
   ]
 })
 export class DestinationsModule { }

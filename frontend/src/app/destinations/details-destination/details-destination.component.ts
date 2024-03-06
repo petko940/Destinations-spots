@@ -1,5 +1,5 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { Destination } from '../types/destination';
+import { Component, OnInit } from '@angular/core';
+import { Destination } from '../../types/destination';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import Map from 'ol/Map';
@@ -7,8 +7,9 @@ import View from 'ol/View';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
-import { Rating } from '../types/rating';
-import { AuthenticationService } from '../services/authentication.service';
+import { Rating } from '../../types/rating';
+import { Comment } from '../../types/comment';
+import { AuthenticationService } from '../../services/authentication.service';
 
 
 @Component({
@@ -27,7 +28,9 @@ export class DetailsDestinationComponent implements OnInit {
     allRatings!: Rating[];
     allRatingsCount!: number;
     averageRating!: number;
-    
+
+    comments: Comment[] = [];
+
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
@@ -42,7 +45,8 @@ export class DetailsDestinationComponent implements OnInit {
                     this.isLoading = false;
                     this.destination = data;
 
-                    this.loadRating();
+                    this.fetchRating();
+                    this.fetchComments();
 
                     setTimeout(() => {
                         this.showMap()
@@ -90,8 +94,8 @@ export class DetailsDestinationComponent implements OnInit {
         }
     }
 
-    loadRating(): void {
-        this.http.get<Rating[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/rating')
+    fetchRating(): void {
+        this.http.get<Rating[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/rating/')
             .subscribe(ratingData => {
                 this.allRatings = ratingData;
                 this.allRatingsCount = this.allRatings.length;
@@ -99,8 +103,14 @@ export class DetailsDestinationComponent implements OnInit {
                 const sumStars = this.allRatings.reduce((sum, rating) => sum + rating.stars, 0);
                 this.averageRating = sumStars / this.allRatings.length;
 
-                this.rating = Array(Math.round(this.averageRating)).fill(0);
-                this.remainingStars = Array(5 - Math.round(this.averageRating)).fill(0);
+                if (!this.averageRating) {
+                    this.averageRating = 0;
+                    this.rating = Array(0).fill(0);
+                    this.remainingStars = Array(5).fill(0);
+                } else {
+                    this.rating = Array(Math.round(this.averageRating)).fill(0);
+                    this.remainingStars = Array(5 - Math.round(this.averageRating)).fill(0);
+                }
 
             }, error => {
                 console.log(error);
@@ -121,7 +131,7 @@ export class DetailsDestinationComponent implements OnInit {
         if (existingRating && existingRating.stars === rating) {
             this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId.id}`)
                 .subscribe(response => {
-                    this.loadRating();
+                    this.fetchRating();
                 }, error => {
                     console.error('Error deleting rating:', error);
                 });
@@ -130,13 +140,24 @@ export class DetailsDestinationComponent implements OnInit {
                 stars: rating,
                 user: userId
             };
-            this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating', payload)
+            this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating/', payload)
                 .subscribe(response => {
-                    this.loadRating();
+                    this.fetchRating();
                 }, error => {
                     console.error('Error updating rating:', error);
                 });
         }
+    }
+
+    fetchComments(): void {
+        this.http.get<Comment[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/')
+            .subscribe(commentData => {
+               this.comments = commentData;
+               console.log(this.comments);
+               
+            }, error => {
+                console.log(error);
+            })
     }
 
 }

@@ -7,7 +7,7 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
-import { DetailsDestinationComponent } from './details-destination/details-destination.component';
+import { DetailsDestinationComponent } from './destinations/details-destination/details-destination.component';
 import { CoreModule } from './core/core.module';
 import { DestinationsModule } from './destinations/destinations.module';
 import { SharedModule } from './shared/shared.module';
@@ -17,7 +17,6 @@ import { SharedModule } from './shared/shared.module';
     AppComponent,
     RegisterComponent,
     AboutComponent,
-    DetailsDestinationComponent,
   ],
   imports: [
     BrowserModule,
