@@ -53,7 +53,7 @@
         </div>
 
         <div class="flex flex-col">
-            <input type="text" name="locationInput" formControlName="locationInput"
+            <input type="text" name="locationInput" formControlName="locationInput" [disabled]="isLoading"
                 class="text-black rounded-t-md p-3 placeholder:text-center"
                 placeholder="Click on map or enter location if need find location faster" autocomplete="off">
             <div id="map" class="h-96"></div>

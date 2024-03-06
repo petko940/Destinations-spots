@@ -6,9 +6,9 @@ import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
-import { CreateDestinationService } from '../services/create-destination.service';
+import { CreateDestinationService } from '../../services/create-destination.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../services/authentication.service';
+import { AuthenticationService } from '../../services/authentication.service';
 
 
 @Component({
@@ -222,7 +222,7 @@ export class CreateDestinationComponent implements OnInit {
                 console.log(response);
                 this.submitErrorMessage = '';
                 this.isLoading = false;
-                // this.router.navigate(['/']);
+                this.router.navigate(['/']);
             }, error => {
                 console.error('Error:', error);
                 this.submitErrorMessage = 'An error occurred. Please try again.';

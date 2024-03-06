@@ -1,8 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
-import { Destination } from '../types/destination';
-import { AuthenticationService } from '../services/authentication.service';
 import { Router } from '@angular/router';
+import { Destination } from '../../types/destination';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
     selector: 'app-all-destinations',
