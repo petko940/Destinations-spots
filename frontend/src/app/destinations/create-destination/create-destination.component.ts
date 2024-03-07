@@ -79,7 +79,7 @@ export class CreateDestinationComponent implements OnInit {
             ],
             view: new View({
                 center: [25.5, 42.8],
-                zoom: 7.5,
+                zoom: 6.9,
                 projection: 'EPSG:4326'
             })
         });
@@ -98,11 +98,9 @@ export class CreateDestinationComponent implements OnInit {
         this.map.on('click', (event) => {
             this.isLoading = true;
             const clickedCoordinate = event.coordinate;
-            const lon = clickedCoordinate[0];
-            const lat = clickedCoordinate[1];
               
-            this.latitude = lat;
-            this.longitude = lon;
+            this.longitude = clickedCoordinate[0];
+            this.latitude = clickedCoordinate[1];
 
             this.markerOverlay.setPosition(clickedCoordinate);
             if (this.markerOverlay) {
