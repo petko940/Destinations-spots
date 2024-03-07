@@ -11,6 +11,7 @@ import { Rating } from '../../types/rating';
 import { Comment } from '../../types/comment';
 import { AuthenticationService } from '../../services/authentication.service';
 import { RatingService } from '../services/rating.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 
 @Component({
@@ -32,12 +33,22 @@ export class DetailsDestinationComponent implements OnInit {
 
     comments: Comment[] = [];
 
+    addCommentForm: FormGroup;
+    nameCharsCount: number = 0;
+    commentCharsCount: number = 0;
+
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
         private ratingService: RatingService,
-    ) { }
+        private fb: FormBuilder,
+    ) {
+        this.addCommentForm = this.fb.group({
+            name: ['', Validators.required],
+            comment: ['', Validators.required],
+        })
+    }
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -132,7 +143,7 @@ export class DetailsDestinationComponent implements OnInit {
 
         if (existingRating && existingRating.stars === rating) {
             this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId.id}`)
-                .subscribe(response => {
+                .subscribe(() => {
                     this.fetchRating();
                 }, error => {
                     console.error('Error deleting rating:', error);
@@ -143,7 +154,7 @@ export class DetailsDestinationComponent implements OnInit {
                 user: userId
             };
             this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating/', payload)
-                .subscribe(response => {
+                .subscribe(() => {
                     this.fetchRating();
                 }, error => {
                     console.error('Error updating rating:', error);
@@ -154,12 +165,37 @@ export class DetailsDestinationComponent implements OnInit {
     fetchComments(): void {
         this.http.get<Comment[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/')
             .subscribe(commentData => {
-               this.comments = commentData;
-               console.log(this.comments);
-               
+                this.comments = commentData.reverse();
+
             }, error => {
                 console.log(error);
             })
+    }
+
+    addComment(): void {
+        const comment = {
+            destination: this.destinationId,
+            name: this.addCommentForm.value.name,
+            comment: this.addCommentForm.value.comment,
+        }
+
+        this.http.post<Comment>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/', { comment })
+            .subscribe(() => {
+                this.addCommentForm.reset();
+                this.fetchComments();
+
+            }, error => {
+                console.log(error);
+            });
+    }
+
+    charactersCount(field: string): void {
+        if (field === 'name') {
+            this.nameCharsCount = this.addCommentForm.value.name.length;
+        } else if (field === 'comment') {
+            this.commentCharsCount = this.addCommentForm.value.comment.length;
+        }
+
     }
 
 }
