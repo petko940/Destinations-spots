@@ -3,8 +3,8 @@ from rest_framework.response import Response
 
 from apps.destinations.models import Destination
 from apps.destinations.serializers import DestinationSerializer
-from apps.feedback.models import Rating
-from apps.feedback.serializer import RatingSerializer
+from apps.feedback.models import Rating, Comment
+from apps.feedback.serializer import RatingSerializer, CommentSerializer
 
 
 # Create your views here.
@@ -58,3 +58,25 @@ class DeleteRating(generics.DestroyAPIView):
         rating_instance = queryset.first()
         rating_instance.delete()
         return Response("Rating deleted successfully.", status=status.HTTP_204_NO_CONTENT)
+
+
+class DestinationComments(generics.ListCreateAPIView):
+    serializer_class = CommentSerializer
+    lookup_field = 'destination_id'
+
+    def get_queryset(self, *args, **kwargs):
+        destination_id = self.kwargs.get('destination_id')
+        queryset = Comment.objects.filter(destination_id=destination_id)
+        return queryset
+
+    def post(self, request, *args, **kwargs):
+        destination_id = self.kwargs.get('destination_id')
+        destination = Destination.objects.get(id=destination_id)
+        request.data['destination'] = destination.id
+
+        serializer = self.get_serializer(data=request.data['comment'])
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(request.data, status=status.HTTP_201_CREATED)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
