@@ -7,8 +7,8 @@ User = get_user_model()
 # Create your models here.
 class Comment(models.Model):
     destination = models.ForeignKey('destinations.Destination', on_delete=models.CASCADE, related_name='comments')
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    text = models.TextField()
+    name = models.CharField(max_length=20)
+    comment = models.TextField(max_length=200)
 
     objects = models.Manager()
 
