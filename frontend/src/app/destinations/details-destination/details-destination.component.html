@@ -1,6 +1,6 @@
 <app-loader [loading]="isLoading" />
 
-<div *ngIf="destination" class="w-7/12 mx-auto border-white border-2 p-10 m-5">
+<div *ngIf="destination" class="w-2/3 mx-auto border-white border-2 p-10 m-5">
     <h1 class="text-3xl text-cyan-300 text-center pb-3">
         {{ destination.name }}
     </h1>
@@ -36,12 +36,47 @@
 
     <div id="map" class="h-80 pb-4"></div>
 
-    <div class="flex justify-center pb-5">
-        <h2 class="text-2xl text-emerald-100 text-center pb-5">Comments</h2>
-        <ul>
-            <li *ngFor="let comment of comments">
-              {{ comment.text }}
-            </li>
-          </ul>
+    <div class="flex gap-5">
+        <div class="flex flex-col justify-start w-2/3">
+            <h2 class="text-2xl text-emerald-100 text-left pb-2">Comments</h2>
+            <hr>
+            <ul>
+                <li *ngFor="let comment of comments" class="text-white text-xl">
+                    <h1 class="font-bold py-1">{{ comment.name }}</h1>
+                    <div class="pb-3 break-all">{{ comment.comment }}</div>
+                    <hr class="w-5/6 mx-auto pb-2">
+                </li>
+            </ul>
+        </div>
+
+        <form class="flex flex-col gap-1 w-1/3" [formGroup]="addCommentForm" (ngSubmit)="addComment()">
+            <input type="text" placeholder="Enter name" formControlName="name"
+                class="p-2 rounded-md placeholder:py-2 placeholder:text-slate-900" (input)="charactersCount('name')"
+                [maxlength]="20">
+            <div class="relative text-white pb-6">
+                <div *ngIf="addCommentForm.get('name')?.errors?.['required'] && addCommentForm.get('name')?.touched">
+                    <small class="absolute left-0">Name is required</small>
+                </div>
+                <div class="absolute right-0">{{ nameCharsCount }}/20</div>
+            </div>
+
+            <textarea rows="10" placeholder="Add comment..." formControlName="comment"
+                class="textw p-2 rounded-md placeholder:text-slate-900" (input)="charactersCount('comment')"
+                [maxLength]="200">
+            </textarea>
+            <div class="relative text-white pb-6">
+                <div
+                    *ngIf="addCommentForm.get('comment')?.errors?.['required'] && addCommentForm.get('comment')?.touched">
+                    <small class="absolute left-0">Comment is required</small>
+                </div>
+                <div class="absolute right-0">{{ commentCharsCount }}/200</div>
+            </div>
+
+            <button [disabled]="addCommentForm.invalid"
+                class="w-2/3 p-1 rounded-md text-teal-900 bg-white hover:text-white hover:bg-teal-900 duration-200 disabled:bg-red-400 disabled:pointer-events-none">
+                Add comment
+            </button>
+        </form>
     </div>
+
 </div>
