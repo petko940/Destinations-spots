@@ -5,6 +5,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AllDestinationsComponent } from './all-destinations/all-destinations.component';
 import { DetailsDestinationComponent } from './details-destination/details-destination.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 
 
@@ -18,6 +20,8 @@ import { DetailsDestinationComponent } from './details-destination/details-desti
     CommonModule,
     SharedModule,
     ReactiveFormsModule,
+    MatInputModule,
+    MatFormFieldModule,
   ],
   exports: [
     CreateDestinationComponent,
