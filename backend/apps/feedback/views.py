@@ -74,9 +74,9 @@ class DestinationComments(generics.ListCreateAPIView):
         destination = Destination.objects.get(id=destination_id)
         request.data['destination'] = destination.id
 
-        serializer = self.get_serializer(data=request.data['comment'])
-        if serializer.is_valid(raise_exception=True):
+        serializer = self.get_serializer(data=request.data['payload'])
+        if serializer.is_valid():
             serializer.save()
             return Response(request.data, status=status.HTTP_201_CREATED)
 
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)

@@ -7,10 +7,11 @@ import { RegisterComponent } from './register/register.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { AboutComponent } from './about/about.component';
-import { DetailsDestinationComponent } from './destinations/details-destination/details-destination.component';
 import { CoreModule } from './core/core.module';
 import { DestinationsModule } from './destinations/destinations.module';
 import { SharedModule } from './shared/shared.module';
+import { AuthModule } from './auth/auth.module';
+
 
 @NgModule({
   declarations: [
@@ -21,12 +22,15 @@ import { SharedModule } from './shared/shared.module';
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+
     CoreModule,
     SharedModule,
     DestinationsModule,
+    AuthModule,
+
+    AppRoutingModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
