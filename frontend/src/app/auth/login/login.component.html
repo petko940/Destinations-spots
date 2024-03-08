@@ -1,0 +1,20 @@
+<!-- <form>
+    <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput [formControl]="usernameFormControl">
+        <mat-error *ngIf="usernameFormControl.hasError('required')">Username is required</mat-error>
+      </mat-form-field>
+      
+</form> -->
+
+<form>
+    <mat-form-field>
+        <mat-label>Favorite food</mat-label>
+        <input matInput placeholder="Ex. Pizza" value="Sushi">
+    </mat-form-field>
+
+    <mat-form-field class="example-full-width">
+        <mat-label>Leave a comment</mat-label>
+        <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
+    </mat-form-field>
+</form>
