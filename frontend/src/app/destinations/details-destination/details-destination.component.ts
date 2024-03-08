@@ -37,6 +37,9 @@ export class DetailsDestinationComponent implements OnInit {
     nameCharsCount: number = 0;
     commentCharsCount: number = 0;
 
+    submitErrorMessage: string = '';
+
+
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
@@ -173,19 +176,23 @@ export class DetailsDestinationComponent implements OnInit {
     }
 
     addComment(): void {
-        const comment = {
+        const payload = {
             destination: this.destinationId,
             name: this.addCommentForm.value.name,
             comment: this.addCommentForm.value.comment,
         }
-
-        this.http.post<Comment>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/', { comment })
-            .subscribe(() => {
+        
+        this.http.post<Comment>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/', { payload })
+            .subscribe(() => {                                
                 this.addCommentForm.reset();
+                this.nameCharsCount = 0;
+                this.commentCharsCount = 0;
                 this.fetchComments();
 
-            }, error => {
+                this.submitErrorMessage = '';
+            }, error => {                                
                 console.log(error);
+                this.submitErrorMessage = 'An error occurred. Please try again.';
             });
     }
 
