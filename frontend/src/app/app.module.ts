@@ -11,6 +11,7 @@ import { CoreModule } from './core/core.module';
 import { DestinationsModule } from './destinations/destinations.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -24,6 +25,7 @@ import { AuthModule } from './auth/auth.module';
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
 
     CoreModule,
     SharedModule,
