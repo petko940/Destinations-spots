@@ -8,20 +8,24 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
-  isLoggedIn: boolean = false;
+  private isLoggedIn: boolean = false;
   tokenKey: string = 'token';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-  ) { }
+  ) {
+    this.isLoggedIn = !!this.getCookie(this.tokenKey);
+  }
 
   login(credentials: { username: string, password: string }) {
     const apiUrl: string = environment.dbApiUrl;
     return this.http.post(apiUrl + 'login/', credentials).pipe(
       tap((response: any) => {
-        document.cookie = `token=${response.token}; path=/`;
         this.isLoggedIn = true;
+        const expiresDate = new Date();
+        expiresDate.setDate(expiresDate.getDate() + 7);
+        document.cookie = `token=${response.token}; expires=${expiresDate.toUTCString()}; path=/`;
       })
     );
   }
@@ -34,13 +38,11 @@ export class AuthService {
   logout() {
     this.isLoggedIn = false;
     document.cookie = `${this.tokenKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
-
-    console.log("logged out");
     this.router.navigate(['/']);
   }
 
   getCookie(name: string) {
-    const cookies = document.cookie.split(';');    
+    const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
       const cookie = cookies[i].trim();
       if (cookie.startsWith(name + '=')) {
@@ -49,5 +51,8 @@ export class AuthService {
     }
     return null;
   }
-  
+
+  isLoggedInUser() {
+    return this.isLoggedIn;
+  }
 }
