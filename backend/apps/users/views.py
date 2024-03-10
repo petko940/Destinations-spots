@@ -12,13 +12,17 @@ class RegisterAPIView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
     def perform_create(self, serializer):
-        user = serializer.save()
-        login(self.request, user)
+        if serializer.is_valid():
+            username = serializer.validated_data['username'].lower()
+            serializer.validated_data['username'] = username
+
+            user = serializer.save()
+            login(self.request, user)
 
 
 class LoginAPIView(APIView):
     def post(self, request):
-        username = request.data.get('username')
+        username = request.data.get('username').lower()
         password = request.data.get('password')
         user = authenticate(
             username=username,
