@@ -2,6 +2,8 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../services/authentication.service';
+import sha256 from 'sha256'; 
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -16,9 +18,10 @@ export class RegisterComponent {
     private fb: FormBuilder,
     private router: Router,
     private authenticationService: AuthenticationService,
+    private authService: AuthService,
   ) {
     this.form = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3), Validators.maxLength(6)]],
+      username: ['', [Validators.required, Validators.minLength(1), Validators.maxLength(6)]],
       password: ['', [Validators.required]],
       confirmPassword: ['', Validators.required]
     }, { validator: this.passwordMatchValidator });
@@ -35,10 +38,18 @@ export class RegisterComponent {
   }
 
   onSubmit() {
-    this.authenticationService.register(this.form.value)
+    const username = this.form.value.username;
+    const hashedPassword = sha256(this.form.value.password);
+    
+    const formData = {
+      username,
+      password: hashedPassword,
+    };
+    
+    this.authService.register(formData)
       .subscribe((response) => {
         this.authenticationService.setCurrentUser(response);
-        this.router.navigate(['/']);
+        this.router.navigate(['']);
       },
         (error) => {
           console.log("Error", error);
