@@ -9,6 +9,7 @@ import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -41,10 +42,11 @@ export class CreateDestinationComponent implements OnInit {
         private createDestinationService: CreateDestinationService,
         private router: Router,
         private authenticationService: AuthenticationService,
+        private authService: AuthService,
     ) {
         this.fg = new FormGroup({
-            name: new FormControl('', [Validators.required, Validators.minLength(3)]),
-            description: new FormControl('', [Validators.required, Validators.minLength(10)]),
+            name: new FormControl('123', [Validators.required, Validators.minLength(3)]),
+            description: new FormControl('asdqwerzxdfasedweqe qwe', [Validators.required, Validators.minLength(10)]),
             photo: new FormControl(''),
             latitude: new FormControl(''),
             longitude: new FormControl(''),
@@ -56,7 +58,9 @@ export class CreateDestinationComponent implements OnInit {
         this.latitude = this.fg.get('latitude')?.value;
         this.longitude = this.fg.get('longitude')?.value;
 
-        this.currentUser = this.authenticationService.getCurrentUser();
+        // this.currentUser = this.authenticationService.getCurrentUser();
+        this.currentUser = this.authService.getCurrentUserId();
+
     }
 
     ngOnInit() {
@@ -98,7 +102,7 @@ export class CreateDestinationComponent implements OnInit {
         this.map.on('click', (event) => {
             this.isLoading = true;
             const clickedCoordinate = event.coordinate;
-              
+
             this.longitude = clickedCoordinate[0];
             this.latitude = clickedCoordinate[1];
 
@@ -213,11 +217,10 @@ export class CreateDestinationComponent implements OnInit {
         formData.append('longitude', String(this.longitude));
         formData.append('location', this.selectedLocation.location);
         formData.append('photo', this.fg.get('photo')?.value);
-        formData.append('user', this.currentUser.id);
+        formData.append('user', this.currentUser);
 
         this.createDestinationService.createDestination(formData)
             .subscribe(response => {
-                console.log(response);
                 this.submitErrorMessage = '';
                 this.isLoading = false;
                 this.router.navigate(['/']);

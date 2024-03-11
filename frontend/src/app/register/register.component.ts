@@ -48,8 +48,10 @@ export class RegisterComponent {
     
     this.authService.register(formData)
       .subscribe((response) => {
-        this.authenticationService.setCurrentUser(response);
-        this.router.navigate(['']);
+        this.authService.login(formData)
+        .subscribe(() => {
+          this.router.navigate(['']);
+        })
       },
         (error) => {
           console.log("Error", error);
