@@ -10,7 +10,7 @@ export class AuthenticationService {
   constructor(private http: HttpClient) { }
 
   setCurrentUser(user: any): void {
-    localStorage.setItem('user', JSON.stringify(user));
+    // localStorage.setItem('user', JSON.stringify(user));
   }
 
   getCurrentUser() {
@@ -19,7 +19,7 @@ export class AuthenticationService {
   }
 
   register(data: any) {
-    const apiUrl: string = environment.dbApiUrl;
-    return this.http.post(apiUrl + 'register/', data);
+    // const apiUrl: string = environment.dbApiUrl;
+    // return this.http.post(apiUrl + 'register/', data);
   }
 }

@@ -7,6 +7,7 @@ import { AllDestinationsComponent } from './all-destinations/all-destinations.co
 import { DetailsDestinationComponent } from './details-destination/details-destination.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { DestinationsRoutingModule } from './destinations-routing.module';
 
 
 
@@ -27,6 +28,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     CreateDestinationComponent,
     AllDestinationsComponent,
     DetailsDestinationComponent,
+    DestinationsRoutingModule,
   ]
 })
 export class DestinationsModule { }

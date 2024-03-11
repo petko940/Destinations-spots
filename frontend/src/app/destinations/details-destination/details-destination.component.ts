@@ -12,6 +12,7 @@ import { Comment } from '../../types/comment';
 import { AuthenticationService } from '../../services/authentication.service';
 import { RatingService } from '../services/rating.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthService } from '../../auth/auth.service';
 
 
 @Component({
@@ -44,6 +45,7 @@ export class DetailsDestinationComponent implements OnInit {
         private http: HttpClient,
         private route: ActivatedRoute,
         private authenticationService: AuthenticationService,
+        private authService: AuthService,
         private ratingService: RatingService,
         private fb: FormBuilder,
     ) {
@@ -135,17 +137,17 @@ export class DetailsDestinationComponent implements OnInit {
 
     updateRating(rating: number): void {
         const destinationId = this.destination.id;
-        const userId = this.authenticationService.getCurrentUser();
-
+        const userId = this.authService.getCurrentUserId();
+            
         if (!userId) {
             console.error('User ID not available.');
             return;
         }
-
-        const existingRating = this.allRatings.find(r => r.user === userId['id']);
-
+        
+        const existingRating = this.allRatings.find(r => r.user.toString() === userId);
+        
         if (existingRating && existingRating.stars === rating) {
-            this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId.id}`)
+            this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId}`)
                 .subscribe(() => {
                     this.fetchRating();
                 }, error => {
