@@ -15,25 +15,39 @@
 
         <ul class="flex flex-wrap justify-center items-center gap-4">
             <li>
-                <a routerLink="/about" routerLinkActive="active" class="border-2 border-white rounded p-2">About</a>
+                <a routerLink="/about" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    About
+                </a>
             </li>
             <li>
-                <a routerLink="/destinations" routerLinkActive="active" class="border-2 border-white rounded p-2">All
-                    Destinations</a>
+                <a routerLink="/destinations" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    All Destinations
+                </a>
             </li>
-            <li>
-                <a routerLink="/create" routerLinkActive="active" class="border-2 border-white rounded p-2">Create
-                    Destination</a>
+            <li *ngIf="isLoggedIn()">
+                <a routerLink="/create" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    Create Destination
+                </a>
             </li>
-            <li>
-                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded p-2">Profile</a>
+            <li *ngIf="isLoggedIn()">
+                <a routerLink="#" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    Profile
+                </a>
             </li>
-            <li>
-                <a routerLink="/login" routerLinkActive="active" class="border-2 border-white rounded p-2">Login</a>
+            <li *ngIf="!isLoggedIn()">
+                <a routerLink="/login" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    Login
+                </a>
             </li>
-            <li>
-                <a routerLink="/register" routerLinkActive="active"
-                    class="border-2 border-white rounded p-2">Register</a>
+            <li *ngIf="!isLoggedIn()">
+                <a routerLink="/register" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                    Register
+                </a>
+            </li>
+            <li *ngIf="isLoggedIn()">
+                <a (click)="logout()" class="border-2 border-white rounded p-2 cursor-pointer">
+                    Logout
+                </a>
             </li>
         </ul>
     </nav>
