@@ -2,7 +2,6 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 
 from apps.destinations.models import Destination
-from apps.destinations.serializers import DestinationSerializer
 from apps.feedback.models import Rating, Comment
 from apps.feedback.serializer import RatingSerializer, CommentSerializer
 
@@ -22,9 +21,7 @@ class DestinationRating(generics.ListCreateAPIView):
         destination = Destination.objects.get(id=destination_id)
         request.data['destination'] = destination.id
 
-        user_id = request.data['user']['id']
-        request.data['user'] = user_id
-
+        user_id = request.data['user']
         existing_rating = Rating.objects.filter(destination_id=destination_id, user_id=user_id).first()
 
         if existing_rating:
