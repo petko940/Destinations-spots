@@ -1,7 +1,7 @@
 <app-loader [loading]="isLoading" />
 
-<div class="flex justify-center">
-    <input (click)="toggleShowMyDestinations()" type="checkbox" name="" id="" class="w-6 h-6"> show my
+<div *ngIf="isLoggedIn" class="flex justify-center">
+    <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6"> show my
 </div>
 
 <div class="flex justify-center">
