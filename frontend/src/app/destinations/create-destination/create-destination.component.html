@@ -7,25 +7,10 @@
             Create Destination Location
         </h1>
 
-        <!-- <div class="flex flex-col text-center w-1/2 mx-auto">
-            <label for="name">Destination name</label>
-            <input type="text" id="name" name="name" formControlName="name"
-                class="text-black rounded-md p-3 placeholder:text-center" placeholder="Destination name"
-                autocomplete="off">
-        </div> -->
-        <!-- <div *ngIf="fg.get('name')?.invalid && fg.get('name')?.dirty" class="text-red-500 mx-auto">
-            <div *ngIf="fg.get('name')?.errors?.['required']">
-                Destination name is required
-            </div>
-            <div *ngIf="fg.get('name')?.errors?.['minlength']">
-                Destination name must be at least 3 characters long
-            </div>
-        </div> -->
-
         <mat-form-field class="w-2/3 mx-auto text-black text-xl">
             <mat-label>Destination name</mat-label>
             <input matInput formControlName="name" [maxlength]="50">
-            <mat-hint align="end">
+            <mat-hint align="end" class="text-white">
                 {{ fg.get('name')?.value?.length || 0 }} / 50
             </mat-hint>
             <mat-error *ngIf="fg.get('name')?.errors?.['required']">
@@ -39,7 +24,7 @@
         <mat-form-field>
             <mat-label>Description</mat-label>
             <textarea matInput rows="10" formControlName="description" [maxlength]="500"></textarea>
-            <mat-hint align="end">
+            <mat-hint align="end" class="text-white">
                 {{ fg.get('description')?.value?.length || 0 }} / 500
             </mat-hint>
             <mat-error *ngIf="fg.get('description')?.errors?.['required']">
