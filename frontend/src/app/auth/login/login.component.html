@@ -1,20 +1,43 @@
-<!-- <form>
-    <mat-form-field appearance="outline">
-        <mat-label>Username</mat-label>
-        <input matInput [formControl]="usernameFormControl">
-        <mat-error *ngIf="usernameFormControl.hasError('required')">Username is required</mat-error>
-      </mat-form-field>
-      
-</form> -->
+<div class="w-1/2 mx-auto p-6 mt-8 border-4 border-white rounded-lg">
 
-<form>
-    <mat-form-field>
-        <mat-label>Favorite food</mat-label>
-        <input matInput placeholder="Ex. Pizza" value="Sushi">
-    </mat-form-field>
+    <div class="flex justify-center">
 
-    <mat-form-field class="example-full-width">
-        <mat-label>Leave a comment</mat-label>
-        <textarea matInput placeholder="Ex. It makes me feel..."></textarea>
-    </mat-form-field>
-</form>
+        <form [formGroup]="loginForm" class="flex flex-col text-center w-5/6" (ngSubmit)="onSubmit()">
+            <h1 class="text-center p-5 text-3xl text-cyan-200">
+                Login
+            </h1>
+
+            <mat-form-field class="pb-3">
+                <div class="relative">
+                    <i class="fa-solid fa-user text-cyan-900 absolute top-[-8px] right-0 text-2xl"></i>
+                </div>
+                <mat-label>Username</mat-label>
+                <input matInput formControlName="username" maxlength="30">
+                <mat-hint align="end" class="text-white">
+                    {{ loginForm.get('username')?.value?.length }}/30
+                </mat-hint>
+            </mat-form-field>
+
+            <mat-form-field>
+                <div class="relative">
+                    <i class="fa-solid fa-lock text-cyan-900 absolute top-[-10px] right-0 text-2xl"></i>
+                </div>
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" maxlength="50">
+                <mat-hint align="end" class="text-white">
+                    {{ loginForm.get('password')?.value?.length }}/50
+                </mat-hint>
+            </mat-form-field>
+    
+            <button type="submit" class="bg-amber-400 w-1/4 p-2 mx-auto my-2 rounded-lg">
+                Submit
+            </button>
+            
+            <h2 class="text-red-500">
+                {{ errorMessage }}
+            </h2>
+        </form>
+
+    </div>
+
+</div>
