@@ -8,7 +8,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { debounceTime } from 'rxjs';
 import { CreateDestinationService } from '../services/create-destination.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
 import { AuthService } from '../../auth/auth.service';
 
 
@@ -57,7 +56,6 @@ export class CreateDestinationComponent implements OnInit {
         this.latitude = this.fg.get('latitude')?.value;
         this.longitude = this.fg.get('longitude')?.value;
 
-        // this.currentUser = this.authenticationService.getCurrentUser();
         this.currentUser = this.authService.getCurrentUserId();
 
     }
