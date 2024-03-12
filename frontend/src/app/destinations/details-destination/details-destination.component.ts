@@ -9,7 +9,6 @@ import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
 import { Rating } from '../../types/rating';
 import { Comment } from '../../types/comment';
-import { AuthenticationService } from '../../services/authentication.service';
 import { RatingService } from '../services/rating.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
@@ -44,7 +43,6 @@ export class DetailsDestinationComponent implements OnInit {
     constructor(
         private http: HttpClient,
         private route: ActivatedRoute,
-        private authenticationService: AuthenticationService,
         private authService: AuthService,
         private ratingService: RatingService,
         private fb: FormBuilder,
@@ -138,12 +136,12 @@ export class DetailsDestinationComponent implements OnInit {
     updateRating(rating: number): void {
         const destinationId = this.destination.id;
         const userId = this.authService.getCurrentUserId();
-            
+
         if (!userId) {
             console.error('User ID not available.');
             return;
         }
-        
+
         const existingRating = this.allRatings.find(r => r.user.toString() === userId);
         
         if (existingRating && existingRating.stars === rating) {
@@ -183,16 +181,16 @@ export class DetailsDestinationComponent implements OnInit {
             name: this.addCommentForm.value.name,
             comment: this.addCommentForm.value.comment,
         }
-        
+
         this.http.post<Comment>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/', { payload })
-            .subscribe(() => {                                
+            .subscribe(() => {
                 this.addCommentForm.reset();
                 this.nameCharsCount = 0;
                 this.commentCharsCount = 0;
                 this.fetchComments();
 
                 this.submitErrorMessage = '';
-            }, error => {                                
+            }, error => {
                 console.log(error);
                 this.submitErrorMessage = 'An error occurred. Please try again.';
             });

@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Destination } from '../../types/destination';
-import { AuthenticationService } from '../../services/authentication.service';
 import { RatingService } from '../services/rating.service';
 import { Rating } from '../../types/rating';
 import { AllDestinationsService } from '../services/all-destinations.service';
+import { AuthService } from '../../auth/auth.service';
 
 @Component({
     selector: 'app-all-destinations',
@@ -21,8 +21,10 @@ export class AllDestinationsComponent implements OnInit {
     filledStarsMap: { [destinationId: number]: number[] } = {};
     remainingStarsMap: { [destinationId: number]: number[] } = {};
 
+    isLoggedIn: boolean = this.authService.isLoggedIn();
+
     constructor(
-        private authenticationService: AuthenticationService,
+        private authService: AuthService,
         private router: Router,
         private allDestinationsService: AllDestinationsService,
         private ratingService: RatingService,
@@ -78,7 +80,7 @@ export class AllDestinationsComponent implements OnInit {
         this.showMyDestinations = !this.showMyDestinations
 
         if (this.showMyDestinations) {
-            this.myDestinations = this.allDestinations.filter(destination => destination.user == this.authenticationService.getCurrentUser().id);
+            this.myDestinations = this.allDestinations.filter(destination => destination.user.toString() == this.authService.getCurrentUserId());
             this.allDestinations = [...this.myDestinations];
         } else {
             this.allDestinations = [...this.copyAllDestinations];

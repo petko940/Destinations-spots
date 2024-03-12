@@ -41,7 +41,6 @@ export class CreateDestinationComponent implements OnInit {
     constructor(
         private createDestinationService: CreateDestinationService,
         private router: Router,
-        private authenticationService: AuthenticationService,
         private authService: AuthService,
     ) {
         this.fg = new FormGroup({
