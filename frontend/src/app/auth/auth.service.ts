@@ -27,7 +27,7 @@ export class AuthService {
         const encodedUsedId = encodeURIComponent(response.user_id);
         document.cookie = `token=${response.token}; expires=${expiresDate.toUTCString()}; path=/`;
         document.cookie = `userid=${encodedUsedId}; expires=${expiresDate.toUTCString()}; path=/`;
-
+        document.cookie = `username=${encodeURIComponent(response.username)}; expires=${expiresDate.toUTCString()}; path=/`; // Saving the username in a cookie
       })
     );
   }
@@ -40,11 +40,16 @@ export class AuthService {
   logout() {
     document.cookie = `${this.tokenKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     document.cookie = `${this.userKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    document.cookie = `username=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     this.router.navigate(['/']);
   }
 
   getCurrentUserId() {
     return this.getCookie('userid');
+  }
+
+  getCurrentUsername() {
+    return this.getCookie('username');
   }
 
   isLoggedIn() {
