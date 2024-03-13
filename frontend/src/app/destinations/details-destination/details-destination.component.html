@@ -19,7 +19,18 @@
         </h2>
 
     </div>
-    <small class="text-white flex justify-center pb-10 text-lg">Rate this destination by clicking on the stars</small>
+    <small class="text-white flex justify-center pb-5 text-lg">Rate this destination by clicking on the stars</small>
+
+    <div class="flex justify-center gap-3 pb-7">
+        <button [routerLink]="['/edit-destination', destination.id]"
+            class="text-2xl bg-amber-600 p-2 w-36 cursor-pointer rounded-xl">
+            <i class="fa-solid fa-pen-to-square"></i> Edit
+        </button>
+        <button (click)="openDeleteDialog('1000ms', '200ms')"
+        class="text-2xl bg-red-600 p-2 w-36 cursor-pointer rounded-xl">
+            <i class="fa-solid fa-trash"></i> Delete
+        </button>
+    </div>
 
     <div class="flex justify-center pb-5 gap-4">
         <h2 class="text-2xl text-stone-200 text-center w-5/6 mx-auto pb-5">

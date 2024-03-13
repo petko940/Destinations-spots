@@ -12,6 +12,9 @@ import { Comment } from '../../types/comment';
 import { RatingService } from '../services/rating.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { DeleteDestinationComponent } from '../delete-destination/delete-destination.component';
+import { DetailsDestinationService } from '../services/details-destination.service';
 
 
 @Component({
@@ -46,6 +49,8 @@ export class DetailsDestinationComponent implements OnInit {
         private authService: AuthService,
         private ratingService: RatingService,
         private fb: FormBuilder,
+        private matDialog: MatDialog,
+        private detailsDestinationService: DetailsDestinationService,
     ) {
         this.addCommentForm = this.fb.group({
             name: ['', Validators.required],
@@ -56,6 +61,8 @@ export class DetailsDestinationComponent implements OnInit {
     ngOnInit(): void {
         this.route.params.subscribe(params => {
             this.destinationId = Number(params['id']);
+            this.detailsDestinationService.destinationId = this.destinationId;
+
             this.http.get<Destination>('http://127.0.0.1:8000/api/destination/' + this.destinationId)
                 .subscribe(data => {
                     this.isLoading = false;
@@ -143,7 +150,7 @@ export class DetailsDestinationComponent implements OnInit {
         }
 
         const existingRating = this.allRatings.find(r => r.user.toString() === userId);
-        
+
         if (existingRating && existingRating.stars === rating) {
             this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId}`)
                 .subscribe(() => {
@@ -202,7 +209,16 @@ export class DetailsDestinationComponent implements OnInit {
         } else if (field === 'comment') {
             this.commentCharsCount = this.addCommentForm.value.comment.length;
         }
+    }
 
+    openDeleteDialog(enterAnimationDuration: string, exitAnimationDuration: string) {
+        this.matDialog.open(DeleteDestinationComponent, {
+            width: '700px',
+            height: '300px',
+            enterAnimationDuration,
+            exitAnimationDuration,
+            disableClose: true,
+        });
     }
 
 }
