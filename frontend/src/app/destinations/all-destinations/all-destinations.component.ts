@@ -16,6 +16,8 @@ export class AllDestinationsComponent implements OnInit {
     showMyDestinations: boolean = false;
     allDestinations: Destination[] = [];
     myDestinations: Destination[] = [];
+    myDestinationCount: number = 0;
+
     copyAllDestinations: Destination[] = [];
     ratingsMap: { [destinationId: number]: Rating[] } = {};
     filledStarsMap: { [destinationId: number]: number[] } = {};
@@ -25,7 +27,6 @@ export class AllDestinationsComponent implements OnInit {
 
     constructor(
         private authService: AuthService,
-        private router: Router,
         private allDestinationsService: AllDestinationsService,
         private ratingService: RatingService,
     ) { }
@@ -85,11 +86,6 @@ export class AllDestinationsComponent implements OnInit {
         } else {
             this.allDestinations = [...this.copyAllDestinations];
         }
-
-    }
-
-    redirectToDetails(destination: Destination) {
-        this.router.navigate(['/destination', destination.id]);
     }
 
 }

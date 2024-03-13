@@ -28,9 +28,9 @@
                     </div>
                 </div>
 
-                <button (click)="redirectToDetails(destination)"
+                <button [routerLink]="['/destination', destination.id]"
                     class="mt-5 text-2xl bg-cyan-600 w-36 p-2 mx-auto cursor-pointer rounded-xl">
-                    Details
+                    <i class="fa-solid fa-circle-info"></i> Details
                 </button>
             </div>
         </ng-container>
@@ -58,7 +58,7 @@
                     </div>
                 </div>
 
-                <button (click)="redirectToDetails(destination)"
+                <button [routerLink]="['/destination', destination.id]"
                     class="mt-5 text-2xl bg-cyan-600 w-36 p-2 mx-auto cursor-pointer rounded-xl">
                     Details
                 </button>
