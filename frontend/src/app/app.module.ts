@@ -11,6 +11,7 @@ import { DestinationsModule } from './destinations/destinations.module';
 import { SharedModule } from './shared/shared.module';
 import { AuthModule } from './auth/auth.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { UserModule } from './user/user.module';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     SharedModule,
     DestinationsModule,
     AuthModule,
+    UserModule,
 
     AppRoutingModule,
   ],
