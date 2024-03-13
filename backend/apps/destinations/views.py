@@ -48,3 +48,12 @@ class DetailDestination(generics.RetrieveAPIView):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+class EditDestination():
+    pass
+
+
+class DeleteDestination(generics.DestroyAPIView):
+    serializer_class = DestinationSerializer
+    queryset = Destination.objects.all()
