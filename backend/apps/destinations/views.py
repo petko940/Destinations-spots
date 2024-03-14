@@ -50,8 +50,23 @@ class DetailDestination(generics.RetrieveAPIView):
         return Response(serializer.data)
 
 
-class EditDestination():
-    pass
+class EditDestination(generics.RetrieveUpdateAPIView):
+    serializer_class = DestinationSerializer
+    queryset = Destination.objects.all()
+
+    def get(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def put(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'success': 'Destination updated successfully'}, status=status.HTTP_204_NO_CONTENT)
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class DeleteDestination(generics.DestroyAPIView):
