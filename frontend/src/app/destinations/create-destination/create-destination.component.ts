@@ -71,62 +71,62 @@ export class CreateDestinationComponent implements OnInit {
     }
 
     initMap() {
-        this.map = new Map({
-            target: 'map',
-            layers: [
-                new TileLayer({
-                    source: new OSM()
+        setTimeout(() => {
+            this.map = new Map({
+                target: 'map',
+                layers: [
+                    new TileLayer({
+                        source: new OSM()
+                    })
+                ],
+                view: new View({
+                    center: [25.5, 42.8],
+                    zoom: 6.9,
+                    projection: 'EPSG:4326'
                 })
-            ],
-            view: new View({
-                center: [25.5, 42.8],
-                zoom: 6.9,
-                projection: 'EPSG:4326'
-            })
-        });
-
-        this.markerOverlay = new Overlay({
-            positioning: 'center-center',
-            element: document.createElement('div'),
-        });
-        this.map.addOverlay(this.markerOverlay);
-
-        const attribution = document.getElementsByClassName('ol-attribution')[0];
-        if (attribution) {
-            attribution.innerHTML = "";
-        }
-
-        this.map.on('click', (event) => {
-            this.isLoading = true;
-            const clickedCoordinate = event.coordinate;
-
-            this.longitude = clickedCoordinate[0];
-            this.latitude = clickedCoordinate[1];
-
-            this.markerOverlay.setPosition(clickedCoordinate);
-            if (this.markerOverlay) {
-                const markerElement = this.markerOverlay.getElement();
-                if (markerElement) {
-                    markerElement.innerHTML = '<i class="fa-solid fa-location-dot text-2xl text-red-700"></i>';
-                }
+            });
+            this.markerOverlay = new Overlay({
+                positioning: 'center-center',
+                element: document.createElement('div'),
+            });
+            this.map.addOverlay(this.markerOverlay);
+            const attribution = document.getElementsByClassName('ol-attribution')[0];
+            if (attribution) {
+                attribution.innerHTML = "";
             }
 
-            this.submitErrorMessage = '';
+            this.map.on('click', (event) => {
+                this.isLoading = true;
+                const clickedCoordinate = event.coordinate;
 
-            this.createDestinationService.getLocationCoordinates(this.latitude, this.longitude)
-                .subscribe((response: any) => {
-                    this.isLoading = false;
-                    const location = this.createDestinationService.formatLocation(response);
-                    this.selectedLocation = {
-                        latitude: this.latitude,
-                        longitude: this.longitude,
-                        location: location
-                    };
-                },
-                    error => {
-                        console.error('Error:', error);
-                    });
-        });
+                this.longitude = clickedCoordinate[0];
+                this.latitude = clickedCoordinate[1];
+
+                this.markerOverlay.setPosition(clickedCoordinate);
+                if (this.markerOverlay) {
+                    const markerElement = this.markerOverlay.getElement();
+                    if (markerElement) {
+                        markerElement.innerHTML = '<i class="fa-solid fa-location-dot text-2xl text-red-700"></i>';
+                    }
+                }
+
+                this.submitErrorMessage = '';
+
+                this.createDestinationService.getLocationCoordinates(this.latitude, this.longitude)
+                    .subscribe((response: any) => {
+                        this.isLoading = false;
+                        const location = this.createDestinationService.formatLocation(response);
+                        this.selectedLocation = {
+                            latitude: this.latitude,
+                            longitude: this.longitude,
+                            location: location
+                        };
+                    },
+                        error => {
+                            console.error('Error:', error);
+                        });
+            });
+        })
     }
 
     onFileSelected(event: any) {
