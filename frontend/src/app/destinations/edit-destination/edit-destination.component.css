@@ -1,0 +1,16 @@
+::ng-deep .ol-attribution.ol-unselectable.ol-control.ol-uncollapsible {
+    display: none;
+}
+
+::ng-deep .ol-zoom button.ol-zoom-in,
+::ng-deep .ol-zoom button.ol-zoom-out {
+   visibility: hidden;
+}
+
+::ng-deep .ol-zoom.ol-unselectable.ol-control {
+    width: 60px !important;
+}
+
+::ng-deep .ol-rotate.ol-unselectable.ol-control {
+    display: none;
+}

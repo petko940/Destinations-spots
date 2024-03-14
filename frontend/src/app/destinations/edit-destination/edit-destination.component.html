@@ -1,3 +1,71 @@
-<p>edit-destination works!</p>
+<div class="w-7/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
 
-<app-delete-loader></app-delete-loader>
+    <form [formGroup]="destinationForm" class="flex flex-col gap-4 text-xl text-white p-7">
+        <h1 class="text-3xl mx-auto p-4">
+            Create Destination Location
+        </h1>
+
+        <mat-form-field class="w-2/3 mx-auto text-black text-xl">
+            <mat-label>Destination name</mat-label>
+            <input matInput formControlName="name" [maxlength]="50">
+            <mat-hint align="end" class="text-white">
+                {{ destinationForm.get('name')?.value?.length || 0 }} / 50
+            </mat-hint>
+            <mat-error *ngIf="destinationForm.get('name')?.errors?.['required']">
+                Destination name is required
+            </mat-error>
+            <mat-error *ngIf="destinationForm.get('name')?.errors?.['minlength']">
+                Destination name must be at least 3 characters long
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="10" formControlName="description" [maxlength]="500"></textarea>
+            <mat-hint align="end" class="text-white">
+                {{ destinationForm.get('description')?.value?.length || 0 }} / 500
+            </mat-hint>
+            <mat-error *ngIf="destinationForm.get('description')?.errors?.['required']">
+                Destination description is required
+            </mat-error>
+            <mat-error *ngIf="destinationForm.get('description')?.errors?.['minlength']">
+                Destination description must be at least 10 characters long
+            </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-center items-center gap-4">
+            <label for="photo">Photo</label>
+            <input type="file" (change)="onFileSelected($event)" accept="image/*" id="photo" name="photo">
+            <div *ngIf="selectedImage" class="w-1/3">
+                <img [src]="selectedImage" alt="" class="w-1/2 h-auto">
+            </div>
+        </div>
+        <div *ngIf="destinationForm.get('photo')?.errors?.['invalidImageSize']" class="text-red-500 mx-auto">
+            {{ imagesErrorMessage }}
+        </div>
+        <div *ngIf="destinationForm.get('photo')?.errors?.['invalidImageFormat']" class="text-red-500 mx-auto">
+            {{ imagesErrorMessage }}
+        </div>
+
+        <div class="flex flex-col">
+            <input type="text" name="locationInput" formControlName="locationInput"
+                class="text-black rounded-t-md p-3 placeholder:text-center"
+                placeholder="Click on map or enter location if need find location faster" autocomplete="off">
+            <div id="map" class="h-96"></div>
+        </div>
+
+        <p>{{ selectedLocation.location }}</p>
+
+        <div class="mx-auto">
+            <button (click)="onSubmit()"
+                [disabled]="destinationForm.invalid || !selectedLocation.location || selectedLocation.location === 'Unknown! Choose another location!'"
+                type="submit" class="rounded-md bg-white text-black p-3 disabled:bg-gray-400">
+                Edit
+            </button>
+        </div>
+
+        <div *ngIf="submitErrorMessage" class="text-red-500 text-2xl mx-auto">{{ submitErrorMessage }}</div>
+
+    </form>
+
+</div>
