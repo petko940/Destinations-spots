@@ -7,6 +7,6 @@ export interface Destination {
     photo: string;
     latitude: number;
     longitude: number;
-    created_at: string;
+    modified_at: string;
     user: User;
 }
