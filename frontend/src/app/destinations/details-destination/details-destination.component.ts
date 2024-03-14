@@ -42,6 +42,7 @@ export class DetailsDestinationComponent implements OnInit {
 
     submitErrorMessage: string = '';
 
+    username!: string;
 
     constructor(
         private http: HttpClient,
@@ -55,7 +56,9 @@ export class DetailsDestinationComponent implements OnInit {
         this.addCommentForm = this.fb.group({
             name: ['', Validators.required],
             comment: ['', Validators.required],
-        })
+        });
+
+        this.username = this.authService.getCurrentUsername() || '';
     }
 
     ngOnInit(): void {

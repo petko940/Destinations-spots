@@ -31,6 +31,7 @@ export class EditDestinationComponent {
 
     destinationId!: number;
     currentDestination!: any;
+    
     destinationForm: FormGroup;
 
     currentUser: any;
@@ -44,7 +45,6 @@ export class EditDestinationComponent {
         private route: ActivatedRoute,
         private fb: FormBuilder,
         private createDestinationService: CreateDestinationService,
-        private createDestinationComponent: CreateDestinationComponent,
         private authService: AuthService,
         private router: Router,
     ) {
