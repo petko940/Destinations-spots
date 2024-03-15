@@ -2,12 +2,14 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { LoaderComponent } from './loader/loader.component';
 import { DeleteLoaderComponent } from './delete-loader/delete-loader.component';
+import { EditLoadedComponent } from './edit-loaded/edit-loaded.component';
 
 
 @NgModule({
   declarations: [
     LoaderComponent,
-    DeleteLoaderComponent
+    DeleteLoaderComponent,
+    EditLoadedComponent,
   ],
   imports: [
     CommonModule,
@@ -15,6 +17,7 @@ import { DeleteLoaderComponent } from './delete-loader/delete-loader.component';
   exports: [
     LoaderComponent,
     DeleteLoaderComponent,
+    EditLoadedComponent,
   ]
 })
 export class SharedModule { }

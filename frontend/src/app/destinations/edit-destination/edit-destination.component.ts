@@ -17,7 +17,8 @@ import { AuthService } from '../../auth/auth.service';
     styleUrl: './edit-destination.component.css'
 })
 export class EditDestinationComponent {
-    isLoading: boolean = false;
+    isLoading: boolean = true;
+    editLoading: boolean = false;
 
     map!: Map;
     markerOverlay!: Overlay;
@@ -78,11 +79,13 @@ export class EditDestinationComponent {
     fetchDestination() {
         this.editDestinationService.fetchDestinationData(this.destinationId)
             .subscribe(data => {
+                this.isLoading = false;
                 this.currentDestination = data;
                 this.populateForm();
                 this.initMap();
                 this.selectedLocation.location = this.currentDestination.location;
             }, error => {
+                this.isLoading = false;
                 console.log(error);
             })
     }
@@ -243,6 +246,10 @@ export class EditDestinationComponent {
     }
 
     onSubmit() {
+        if (this.destinationForm.invalid) {
+            return;
+        }
+
         const formData = new FormData();
         formData.append('name', this.destinationForm.get('name')?.value);
         formData.append('description', this.destinationForm.get('description')?.value);
@@ -261,7 +268,11 @@ export class EditDestinationComponent {
 
         this.editDestinationService.updateDestination(this.destinationId, formData)
             .subscribe(response => {
-                this.router.navigate(['destination', this.destinationId]);
+                this.editLoading = true;
+
+                setTimeout(() => {
+                    this.router.navigate(['destination', this.destinationId]);
+                }, 3000)
             }, error => {
                 console.error('Error:', error);
             })
