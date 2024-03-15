@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from '../delete-destination/delete-destination.component';
 import { DetailsDestinationService } from '../services/details-destination.service';
 import { CommentsService } from '../services/comments.service';
+import { ShowImageComponent } from './show-image/show-image.component';
 
 
 @Component({
@@ -120,6 +121,16 @@ export class DetailsDestinationComponent implements OnInit {
             }
         }
     }
+    
+    openFullImage(enterAnimationDuration: string, exitAnimationDuration: string) {
+        this.matDialog.open(ShowImageComponent, {
+            width: '960px',
+            height: '540px',
+            enterAnimationDuration,
+            exitAnimationDuration,
+            data: { destination: this.destination } 
+        });     
+    }
 
     fetchRating(): void {
         this.ratingService.fetchRating(this.destinationId)
@@ -145,7 +156,6 @@ export class DetailsDestinationComponent implements OnInit {
     }
 
     updateRating(rating: number): void {
-        const destinationId = this.destination.id;
         const userId = this.authService.getCurrentUserId();
 
         if (!userId) {
@@ -187,6 +197,10 @@ export class DetailsDestinationComponent implements OnInit {
     }
 
     addComment(): void {
+        if (!this.addCommentForm.valid) {
+            return;
+        }
+        
         const payload = {
             destination: this.destinationId,
             name: this.addCommentForm.value.name,
