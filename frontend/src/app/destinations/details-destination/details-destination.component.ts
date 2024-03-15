@@ -15,6 +15,7 @@ import { AuthService } from '../../auth/auth.service';
 import { MatDialog } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from '../delete-destination/delete-destination.component';
 import { DetailsDestinationService } from '../services/details-destination.service';
+import { CommentsService } from '../services/comments.service';
 
 
 @Component({
@@ -45,13 +46,13 @@ export class DetailsDestinationComponent implements OnInit {
     username!: string;
 
     constructor(
-        private http: HttpClient,
         private route: ActivatedRoute,
         private authService: AuthService,
         private ratingService: RatingService,
         private fb: FormBuilder,
         private matDialog: MatDialog,
         private detailsDestinationService: DetailsDestinationService,
+        private commentService: CommentsService,
     ) {
         this.addCommentForm = this.fb.group({
             name: ['', Validators.required],
@@ -66,7 +67,7 @@ export class DetailsDestinationComponent implements OnInit {
             this.destinationId = Number(params['id']);
             this.detailsDestinationService.destinationId = this.destinationId;
 
-            this.http.get<Destination>('http://127.0.0.1:8000/api/destination/' + this.destinationId)
+            this.detailsDestinationService.fetchDestination(this.destinationId)
                 .subscribe(data => {
                     this.isLoading = false;
                     this.destination = data;
@@ -155,7 +156,7 @@ export class DetailsDestinationComponent implements OnInit {
         const existingRating = this.allRatings.find(r => r.user.toString() === userId);
 
         if (existingRating && existingRating.stars === rating) {
-            this.http.delete(`http://127.0.0.1:8000/api/destination/${destinationId}/rating/delete?user=${userId}`)
+            this.ratingService.deleteRating(this.destinationId, Number(userId))
                 .subscribe(() => {
                     this.fetchRating();
                 }, error => {
@@ -166,7 +167,7 @@ export class DetailsDestinationComponent implements OnInit {
                 stars: rating,
                 user: userId
             };
-            this.http.post<Rating[]>('http://127.0.0.1:8000/api/destination/' + destinationId + '/rating/', payload)
+            this.ratingService.postRating(this.destinationId, payload)
                 .subscribe(() => {
                     this.fetchRating();
                 }, error => {
@@ -176,7 +177,7 @@ export class DetailsDestinationComponent implements OnInit {
     }
 
     fetchComments(): void {
-        this.http.get<Comment[]>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/')
+        this.commentService.fetchComments(this.destinationId)
             .subscribe(commentData => {
                 this.comments = commentData.reverse();
 
@@ -192,7 +193,7 @@ export class DetailsDestinationComponent implements OnInit {
             comment: this.addCommentForm.value.comment,
         }
 
-        this.http.post<Comment>('http://127.0.0.1:8000/api/destination/' + this.destinationId + '/comments/', { payload })
+        this.commentService.postComment(this.destinationId, payload)
             .subscribe(() => {
                 this.addCommentForm.reset();
                 this.nameCharsCount = 0;
