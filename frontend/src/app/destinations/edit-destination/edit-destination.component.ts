@@ -68,7 +68,6 @@ export class EditDestinationComponent {
             this.fetchDestination();
         });
 
-        // TODO: fix this
         this.destinationForm.get('locationInput')?.valueChanges
             .pipe(debounceTime(1000))
             .subscribe(() => {
