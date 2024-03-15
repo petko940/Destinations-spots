@@ -1,8 +1,10 @@
+<app-loader [loading]="isLoading"></app-loader>
+
 <div class="w-7/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
 
     <form [formGroup]="destinationForm" class="flex flex-col gap-4 text-xl text-white p-7">
         <h1 class="text-3xl mx-auto p-4">
-            Create Destination Location
+            Edit Destination
         </h1>
 
         <mat-form-field class="w-2/3 mx-auto text-black text-xl">
@@ -17,6 +19,7 @@
             <mat-error *ngIf="destinationForm.get('name')?.errors?.['minlength']">
                 Destination name must be at least 3 characters long
             </mat-error>
+            <i class="fa-solid fa-pencil absolute top-[23px] right-0"></i>
         </mat-form-field>
 
         <mat-form-field>
@@ -31,6 +34,7 @@
             <mat-error *ngIf="destinationForm.get('description')?.errors?.['minlength']">
                 Destination description must be at least 10 characters long
             </mat-error>
+            <i class="fa-solid fa-pencil text-black absolute top-[23px] right-0"></i>
         </mat-form-field>
 
         <div class="flex justify-center items-center gap-4">
@@ -47,6 +51,8 @@
             {{ imagesErrorMessage }}
         </div>
 
+        <app-edit-loaded [loading]="editLoading"></app-edit-loaded>
+
         <div class="flex flex-col">
             <input type="text" name="locationInput" formControlName="locationInput"
                 class="text-black rounded-t-md p-3 placeholder:text-center"
@@ -56,10 +62,13 @@
 
         <p>{{ selectedLocation.location }}</p>
 
-        <div class="mx-auto">
+        <div class="mx-auto flex gap-3">
+            <button [routerLink]="['/destination', destinationId]" type="submit" class="rounded-md bg-neutral-100 text-black px-6 py-2 disabled:bg-gray-400">
+                Back
+            </button>
             <button (click)="onSubmit()"
                 [disabled]="destinationForm.invalid || !selectedLocation.location || selectedLocation.location === 'Unknown! Choose another location!'"
-                type="submit" class="rounded-md bg-white text-black p-3 disabled:bg-gray-400">
+                type="submit" class="rounded-md bg-gradient-to-r from-cyan-400 to-blue-500 text-white px-6 py-2 disabled:bg-gray-400">
                 Edit
             </button>
         </div>
