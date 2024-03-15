@@ -1,5 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Component } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { DeleteDestinationService } from '../services/delete-destination.service';
 import { DetailsDestinationService } from '../services/details-destination.service';
 import { Router } from '@angular/router';
@@ -15,8 +15,7 @@ export class DeleteDestinationComponent {
     isDeleted: boolean = false;
 
     constructor(
-        @Inject(MAT_DIALOG_DATA) public data: any,
-        public dialogRef: MatDialogRef<DeleteDestinationComponent>,
+        private dialogRef: MatDialogRef<DeleteDestinationComponent>,
         private deleteDestinationService: DeleteDestinationService,
         private detailsDestinationService: DetailsDestinationService,
         private router: Router,
