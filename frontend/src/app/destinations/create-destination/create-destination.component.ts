@@ -200,6 +200,10 @@ export class CreateDestinationComponent implements OnInit {
     }
 
     onSubmit() {
+        if (this.fg.invalid) {
+            return;
+        }
+
         this.isLoading = true;
 
         if (!this.selectedImage) {
