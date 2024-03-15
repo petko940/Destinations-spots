@@ -13,4 +13,14 @@ export class RatingService {
     const apiUrl = environment.dbApiUrl;
     return this.http.get<any>(`${apiUrl}destination/${destinationId}/rating`);
   }
+
+  postRating(destinationId: number, payload: any) {
+    const apiUrl = environment.dbApiUrl;
+    return this.http.post<any>(`${apiUrl}destination/${destinationId}/rating/`, payload);
+  }
+
+  deleteRating(destinationId: number, userId: number) {
+    const apiUrl = environment.dbApiUrl;
+    return this.http.delete<any>(`${apiUrl}destination/${destinationId}/rating/delete?user=${userId}`);
+  }
 }
