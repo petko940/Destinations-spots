@@ -8,8 +8,7 @@ import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import Overlay from 'ol/Overlay';
 import { CreateDestinationService } from '../services/create-destination.service';
-import { debounceTime, interval } from 'rxjs';
-import { CreateDestinationComponent } from '../create-destination/create-destination.component';
+import { debounceTime } from 'rxjs';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
