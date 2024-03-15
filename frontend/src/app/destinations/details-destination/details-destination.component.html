@@ -22,12 +22,12 @@
     <small class="text-white flex justify-center pb-5 text-lg">Rate this destination by clicking on the stars</small>
 
     <div class="flex justify-center gap-3 pb-7">
-        <button [routerLink]="['/edit-destination', destination.id]"
-            class="text-2xl bg-amber-600 p-2 w-36 cursor-pointer rounded-xl">
+        <button [routerLink]="['/edit-destination', destinationId]"
+            class="text-2xl bg-amber-500 p-2 w-36 cursor-pointer rounded-xl">
             <i class="fa-solid fa-pen-to-square"></i> Edit
         </button>
         <button (click)="openDeleteDialog('1000ms', '200ms')"
-        class="text-2xl bg-red-600 p-2 w-36 cursor-pointer rounded-xl">
+            class="text-2xl bg-red-500 p-2 w-36 cursor-pointer rounded-xl">
             <i class="fa-solid fa-trash"></i> Delete
         </button>
     </div>
@@ -39,10 +39,16 @@
 
         <div *ngIf="destination.photo; else noPhoto" class="w-1/3">
             <img class="max-h-svh mx-auto" src="{{ destination.photo }}" alt="">
+            <h1 class="text-sm text-white">click to see full image</h1>
         </div>
         <ng-template #noPhoto>
             <img class="w-1/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
         </ng-template>
+    </div>
+
+    <div class="text-white flex flex-col">
+        <p>Made by: {{ username }}</p>
+        <p>Last modified on: {{ destination.modified_at | date: 'EEEE dd/MM/yyyy' }}</p>
     </div>
 
     <div id="map" class="h-80 pb-4"></div>
