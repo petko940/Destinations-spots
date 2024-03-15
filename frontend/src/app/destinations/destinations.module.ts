@@ -12,6 +12,7 @@ import { EditDestinationComponent } from './edit-destination/edit-destination.co
 import { RouterModule } from '@angular/router';
 import { MatDialogModule, } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from './delete-destination/delete-destination.component';
+import { ShowImageComponent } from './details-destination/show-image/show-image.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { DeleteDestinationComponent } from './delete-destination/delete-destinat
     DetailsDestinationComponent,
     EditDestinationComponent,
     DeleteDestinationComponent,
+    ShowImageComponent,
   ],
   imports: [
     CommonModule,
@@ -39,6 +41,10 @@ import { DeleteDestinationComponent } from './delete-destination/delete-destinat
     DeleteDestinationComponent,
     DestinationsRoutingModule,
     MatDialogModule
+  ],
+  providers: [
+    CreateDestinationComponent,
+    DetailsDestinationComponent
   ],
 })
 export class DestinationsModule { }
