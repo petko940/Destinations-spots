@@ -121,15 +121,15 @@ export class DetailsDestinationComponent implements OnInit {
             }
         }
     }
-    
+
     openFullImage(enterAnimationDuration: string, exitAnimationDuration: string) {
         this.matDialog.open(ShowImageComponent, {
             width: '960px',
             height: '540px',
             enterAnimationDuration,
             exitAnimationDuration,
-            data: { destination: this.destination } 
-        });     
+            data: { destination: this.destination }
+        });
     }
 
     fetchRating(): void {
@@ -163,8 +163,8 @@ export class DetailsDestinationComponent implements OnInit {
             return;
         }
 
-        const existingRating = this.allRatings.find(r => r.user.toString() === userId);
-
+        const existingRating = this.allRatings.find(r => r.user === userId);
+        
         if (existingRating && existingRating.stars === rating) {
             this.ratingService.deleteRating(this.destinationId, Number(userId))
                 .subscribe(() => {
@@ -200,7 +200,7 @@ export class DetailsDestinationComponent implements OnInit {
         if (!this.addCommentForm.valid) {
             return;
         }
-        
+
         const payload = {
             destination: this.destinationId,
             name: this.addCommentForm.value.name,

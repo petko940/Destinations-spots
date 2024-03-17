@@ -11,9 +11,7 @@ export class ShowImageComponent {
     constructor(
         @Inject(MAT_DIALOG_DATA) public data: any,
         private dialogRef: MatDialogRef<DetailsDestinationComponent>
-    ) {
-        console.log(data.destination.photo);
-    }
+    ) { }
 
     closeDialog() {
         this.dialogRef.close();
