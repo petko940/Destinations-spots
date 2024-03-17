@@ -1,0 +1,6 @@
+<p>edit-username works!</p>
+
+<form [formGroup]="editUsernameForm" (ngSubmit)="onSubmit()">
+    <input type="text" placeholder="Enter new username" formControlName="username">
+    <button>Save</button>
+</form>
