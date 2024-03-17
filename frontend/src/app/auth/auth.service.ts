@@ -3,57 +3,102 @@ import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
 import { tap } from 'rxjs';
 import { Router } from '@angular/router';
+import { jwtDecode } from "jwt-decode";
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  tokenKey: string = 'token';
-  userKey: string = 'userid';
+  apiUrl: string = environment.dbApiUrl;
+
+  accessTokenKey: string = 'access_token';
+  refreshTokenKey: string = 'refresh_token';
 
   constructor(
     private http: HttpClient,
     private router: Router,
-  ) { }
+  ) { };
 
   login(credentials: { username: string, password: string }) {
-    const apiUrl: string = environment.dbApiUrl;
-    return this.http.post(apiUrl + 'login/', credentials).pipe(
+    return this.http.post(this.apiUrl + 'login/', credentials).pipe(
       tap((response: any) => {
-        const expiresDate = new Date();
-        expiresDate.setDate(expiresDate.getDate() + 7);
-
-        const encodedUsedId = encodeURIComponent(response.user_id);
-        document.cookie = `token=${response.token}; expires=${expiresDate.toUTCString()}; path=/`;
-        document.cookie = `userid=${encodedUsedId}; expires=${expiresDate.toUTCString()}; path=/`;
-        document.cookie = `username=${encodeURIComponent(response.username)}; expires=${expiresDate.toUTCString()}; path=/`; // Saving the username in a cookie
+        this.saveTokens(response);
       })
     );
   }
 
   register(data: any) {
-    const apiUrl: string = environment.dbApiUrl;
-    return this.http.post(apiUrl + 'register/', data);
+    return this.http.post(this.apiUrl + 'register/', data);
+  }
+
+  saveTokens(token: any) {
+    const expiresDate = new Date();
+    expiresDate.setDate(expiresDate.getDate() + 7);
+    document.cookie = `${this.accessTokenKey}=${token.access}; expires=${expiresDate.toUTCString()}; path=/`;
+    document.cookie = `${this.refreshTokenKey}=${token.refresh}; expires=${expiresDate.toUTCString()}; path=/`;
+  }
+
+  updateTokens(newUsername: string) {
+    const refreshToken = this.getCookie(this.refreshTokenKey);
+    const expiresDate = new Date();
+    expiresDate.setDate(expiresDate.getDate() + 7);
+    
+    this.http.post(this.apiUrl + 'token-refresh/', { refresh: refreshToken })
+      .subscribe((response: any) => {
+        if (refreshToken) {
+          const newRefreshToken = response.refresh;
+          const decodedToken: any = jwtDecode(newRefreshToken);
+
+          decodedToken.username = newUsername;
+
+          const updatedPayload = this.encodePayload(decodedToken);
+          const [header, signature] = refreshToken.split('.');
+          const newToken = `${header}.${updatedPayload}.${signature}`;
+
+          document.cookie = `${this.accessTokenKey}=${newToken}; expires=${expiresDate.toUTCString()}; path=/`;
+          document.cookie = `${this.refreshTokenKey}=${newRefreshToken}; expires=${expiresDate.toUTCString()}; path=/`;
+        }
+      }, (error) => {
+        console.log(error);
+      })
+  }
+
+  private encodePayload(payload: any): string {
+    const encodedPayload = btoa(JSON.stringify(payload)); // Encoding payload using base64
+    return this.base64urlEncode(encodedPayload);
+  }
+
+  private base64urlEncode(input: string): string {
+    return input.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
   }
 
   logout() {
-    document.cookie = `${this.tokenKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-    document.cookie = `${this.userKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
-    document.cookie = `username=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    document.cookie = `${this.accessTokenKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
+    document.cookie = `${this.refreshTokenKey}=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/`;
     this.router.navigate(['/']);
   }
 
   getCurrentUserId() {
-    return this.getCookie('userid');
+    const token = this.getCookie(this.accessTokenKey);
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.user_id;
+    }
+    return null;
   }
 
-  getCurrentUsername() {
-    return this.getCookie('username');
+  getCurrentUsername(): string | null {
+    const token = this.getCookie(this.accessTokenKey);
+    if (token) {
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.username;
+    }
+    return null;
   }
 
   isLoggedIn() {
-    return !!this.getCookie(this.tokenKey);
+    return !!this.getCookie(this.accessTokenKey);
   }
 
   getCookie(name: string) {
@@ -65,5 +110,9 @@ export class AuthService {
       }
     }
     return null;
+  }
+
+  updateUsername(userId: string, newUsername: string) {
+    return this.http.put(`${this.apiUrl}user/${userId}/change-username/`, { username: newUsername });
   }
 }
