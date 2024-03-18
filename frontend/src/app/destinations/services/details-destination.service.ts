@@ -7,14 +7,15 @@ import { environment } from '../../../environments/environment.development';
   providedIn: 'root'
 })
 export class DetailsDestinationService {
+  apiUrl = environment.dbApiUrl;
+  
   destination!: Destination;
   destinationId!: number;
 
   constructor(private http: HttpClient) { }
 
   fetchDestination(destinationId: number) {
-    const apiUrl = environment.dbApiUrl;
-    return this.http.get<any>(`${apiUrl}destination/${destinationId}`);
+    return this.http.get<any>(`${this.apiUrl}destination/${destinationId}`);
   }
 
 }

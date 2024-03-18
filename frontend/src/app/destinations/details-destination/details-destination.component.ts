@@ -44,6 +44,7 @@ export class DetailsDestinationComponent implements OnInit {
 
     submitErrorMessage: string = '';
 
+    userId!: any;
     username!: string;
 
     constructor(
@@ -60,7 +61,6 @@ export class DetailsDestinationComponent implements OnInit {
             comment: ['', Validators.required],
         });
 
-        this.username = this.authService.getCurrentUsername() || '';
     }
 
     ngOnInit(): void {
@@ -72,6 +72,12 @@ export class DetailsDestinationComponent implements OnInit {
                 .subscribe(data => {
                     this.isLoading = false;
                     this.destination = data;
+                    this.userId = this.destination.user;
+
+                    this.authService.fetchUser(this.userId)
+                        .subscribe(data => {
+                            this.username = data.username;
+                        })
 
                     this.fetchRating();
                     this.fetchComments();
@@ -122,6 +128,12 @@ export class DetailsDestinationComponent implements OnInit {
         }
     }
 
+    canEdit(): boolean {
+        if (this.userId === this.authService.getCurrentUserId()) return true;
+
+        return false;
+    }
+
     openFullImage(enterAnimationDuration: string, exitAnimationDuration: string) {
         this.matDialog.open(ShowImageComponent, {
             width: '960px',
@@ -164,7 +176,7 @@ export class DetailsDestinationComponent implements OnInit {
         }
 
         const existingRating = this.allRatings.find(r => r.user === userId);
-        
+
         if (existingRating && existingRating.stars === rating) {
             this.ratingService.deleteRating(this.destinationId, Number(userId))
                 .subscribe(() => {

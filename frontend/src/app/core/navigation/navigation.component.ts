@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
 
 @Component({
@@ -9,8 +9,12 @@ import { AuthService } from '../../auth/auth.service';
 export class NavigationComponent {
   constructor(private authService: AuthService) { }
 
-  isLoggedIn (): boolean {
+  isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  getCurrentUsername(): string | null {
+    return this.authService.getCurrentUsername();
   }
 
   logout() {

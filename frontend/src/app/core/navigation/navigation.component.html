@@ -30,7 +30,7 @@
                 </a>
             </li>
             <li *ngIf="isLoggedIn()">
-                <a routerLink="/profile" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                <a [routerLink]="['/profile', getCurrentUsername()]" routerLinkActive="active" class="border-2 border-white rounded p-2">
                     Profile
                 </a>
             </li>
@@ -45,8 +45,8 @@
                 </a>
             </li>
             <li *ngIf="isLoggedIn()">
-                <a (click)="logout()" class="border-2 border-white rounded p-2 cursor-pointer">
-                    Logout
+                <a (click)="logout()" class="text-3xl p-2 cursor-pointer">
+                    <i class="fa-solid fa-right-from-bracket"></i>
                 </a>
             </li>
         </ul>
