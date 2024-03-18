@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import sha256 from 'sha256';
 import { AuthService } from '../auth.service';
+import { validateUsername } from '../custom-username-validators';
+import sha256 from 'sha256';
 
 @Component({
     selector: 'app-register',
@@ -21,7 +22,7 @@ export class RegisterComponent {
         this.registerForm = this.fb.group({
             username: ['',
                 [Validators.required,
-                this.validateUsername,
+                    validateUsername,
                 Validators.minLength(3)]],
             password: ['',
                 [Validators.required,
@@ -30,25 +31,6 @@ export class RegisterComponent {
                 Validators.required]
         }, { validators: this.passwordMatchValidator }
         );
-    }
-
-    validateUsername(control: AbstractControl) {
-        const value = control.value;
-        if (!value) return null;
-
-        if (value.indexOf(' ') >= 0) {
-            return { 'noSpace': true };
-        }
-
-        if (/^\d/.test(value)) {
-            return { 'noStartWithDigit': true };
-        }
-
-        if (!/^[a-zA-Z0-9]+$/.test(value)) {
-            return { 'alphanumeric': true };
-        }
-
-        return null;
     }
 
     passwordMatchValidator(g: FormGroup) {
