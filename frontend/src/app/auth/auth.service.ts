@@ -43,7 +43,7 @@ export class AuthService {
     const refreshToken = this.getCookie(this.refreshTokenKey);
     const expiresDate = new Date();
     expiresDate.setDate(expiresDate.getDate() + 7);
-    
+
     this.http.post(this.apiUrl + 'token-refresh/', { refresh: refreshToken })
       .subscribe((response: any) => {
         if (refreshToken) {
@@ -99,6 +99,10 @@ export class AuthService {
 
   isLoggedIn() {
     return !!this.getCookie(this.accessTokenKey);
+  }
+
+  fetchUser(userId: number) {
+    return this.http.get<any>(`${this.apiUrl}user/${userId}`);
   }
 
   getCookie(name: string) {
