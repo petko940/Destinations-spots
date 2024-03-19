@@ -201,5 +201,4 @@ cython_debug/
 /frontend/Thumbs.db
 .idea
 frontend/src/environments/environment.ts
-frontend/src/environments/environment.development.ts
 backend/media/
