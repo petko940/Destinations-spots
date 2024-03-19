@@ -1,9 +1,9 @@
-import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 import { validateUsername } from '../../auth/custom-username-validators';
+import { UserService } from '../user.service';
 
 @Component({
     selector: 'app-edit-username',
@@ -15,12 +15,13 @@ export class EditUsernameComponent {
     username = this.authService.getCurrentUsername();
     editUsernameForm: FormGroup;
     error!: string;
+    editLoading = false;
 
     constructor(
         private fb: FormBuilder,
-        private http: HttpClient,
         private authService: AuthService,
         private router: Router,
+        private userService: UserService,
     ) {
         this.editUsernameForm = this.fb.group({
             username: ['',
@@ -38,15 +39,22 @@ export class EditUsernameComponent {
         let newUsername = this.editUsernameForm.value.username;
         newUsername = newUsername.toLowerCase();
 
-        this.http.put(`http://127.0.0.1:8000/api/user/${this.userId}/change-username/`, this.editUsernameForm.value)
+        const refreshToken = this.authService.getCookie(this.authService.refreshTokenKey);
+        this.userService.editUsername(this.userId, newUsername, refreshToken)
             .subscribe((response) => {
-                this.authService.updateTokens(newUsername);
+                this.editLoading = true;
+
+                const { access, refresh } = response;
+                this.authService.saveTokens({ access, refresh });
+
                 setTimeout(() => {
                     this.router.navigate(['/profile', newUsername]);
-                }, 1000);
+                }, 3000);
+
             }, (error) => {
-                console.log(error);
+                this.editLoading = false;
                 this.error = error.error.username;
+                console.log(error);
             })
     }
 
