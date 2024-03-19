@@ -1,6 +1,42 @@
-<p>edit-username works!</p>
+<div class="flex justify-center p-10 w-1/2 mx-auto">
+    <form [formGroup]="editUsernameForm" (ngSubmit)="onSubmit()" class="flex flex-col w-5/6">
+        <h1 class="text-white text-center text-3xl pb-5">Edit Username</h1>
 
-<form [formGroup]="editUsernameForm" (ngSubmit)="onSubmit()">
-    <input type="text" placeholder="Enter new username" formControlName="username">
-    <button>Save</button>
-</form>
+        <mat-form-field class="pb-3">
+            <div class="relative">
+                <i class="fa-solid fa-user text-cyan-900 absolute top-[-8px] right-0 text-2xl"></i>
+            </div>
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" [maxlength]="30" autocomplete="username">
+            <mat-hint align="start" class="text-white">
+                Username must be at least 3 characters
+            </mat-hint>
+            <mat-hint align="end" class="text-white">
+                {{ editUsernameForm.get('username')?.value?.length || 0 }}/30
+            </mat-hint>
+            <mat-error *ngIf="editUsernameForm.get('username')?.hasError('required')">
+                Username is required
+            </mat-error>
+            <mat-error *ngIf="editUsernameForm.get('username')?.hasError('noSpace')">
+                Username must be one word only
+            </mat-error>
+            <mat-error *ngIf="editUsernameForm.get('username')?.hasError('noStartWithDigit')">
+                Username cannot start with a digit
+            </mat-error>
+            <mat-error *ngIf="editUsernameForm.get('username')?.hasError('alphanumeric')">
+                Username must be alphanumeric
+            </mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-center items-center gap-5 py-3">
+            <a [routerLink]="['/profile', username]">
+                <i class="fa-solid fa-arrow-left text-white text-3xl p-2 hover:text-teal-500 duration-500"></i>
+            </a>
+            <button class="p-2 w-1/4 rounded-md text-teal-900 bg-white hover:text-white hover:bg-teal-700 duration-200">
+                Save
+            </button>
+        </div>
+        <app-edit-loaded [loading]="editLoading"></app-edit-loaded>
+        <div class="text-red-500 text-center">{{ error }}</div>
+    </form>
+</div>
