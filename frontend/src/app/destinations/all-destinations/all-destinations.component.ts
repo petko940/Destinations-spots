@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Destination } from '../../types/destination';
 import { RatingService } from '../services/rating.service';
 import { Rating } from '../../types/rating';
@@ -42,7 +41,6 @@ export class AllDestinationsComponent implements OnInit {
                 this.allDestinations = response.sort((a: Destination, b: Destination) => b.id - a.id);
                 this.copyAllDestinations = [...this.allDestinations];
                 this.fetchRatingsForDestinations();
-
             }, error => {
                 this.isLoading = false
                 console.log(error);
