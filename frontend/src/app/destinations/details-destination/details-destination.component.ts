@@ -74,10 +74,10 @@ export class DetailsDestinationComponent implements OnInit {
                     this.destination = data;
                     this.userId = this.destination.user;
 
-                    this.authService.fetchUser(this.userId)
+                    this.authService.getUsername(this.userId)
                         .subscribe(data => {
                             this.username = data.username;
-                        })
+                        });
 
                     this.fetchRating();
                     this.fetchComments();
@@ -171,7 +171,7 @@ export class DetailsDestinationComponent implements OnInit {
         const userId = this.authService.getCurrentUserId();
 
         if (!userId) {
-            console.error('User ID not available.');
+            console.error('User ID not available');
             return;
         }
 

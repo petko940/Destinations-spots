@@ -8,5 +8,5 @@ export interface Destination {
     latitude: number;
     longitude: number;
     modified_at: string;
-    user: User;
+    user: number;
 }
