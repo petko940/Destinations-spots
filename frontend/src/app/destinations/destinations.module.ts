@@ -14,6 +14,7 @@ import { MatDialogModule, } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from './delete-destination/delete-destination.component';
 import { ShowImageComponent } from './details-destination/show-image/show-image.component';
 import { AllDestinationsPipe } from './all-destinations/all-destinations.pipe';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { AllDestinationsPipe } from './all-destinations/all-destinations.pipe';
     MatInputModule,
     MatFormFieldModule,
     MatDialogModule,
+    MatPaginatorModule,
     RouterModule,
   ],
   exports: [
