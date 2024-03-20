@@ -17,6 +17,8 @@ export class EditUsernameComponent {
     error!: string;
     editLoading = false;
 
+    disabled = false;
+
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
@@ -35,6 +37,8 @@ export class EditUsernameComponent {
         if (this.editUsernameForm.invalid) {
             return;
         }
+
+        this.disabled = true;
 
         let newUsername = this.editUsernameForm.value.username;
         newUsername = newUsername.toLowerCase();

@@ -14,3 +14,11 @@
 ::ng-deep .ol-rotate.ol-unselectable.ol-control {
     display: none;
 }
+
+::ng-deep .mat-mdc-paginator-container {
+    justify-content: center !important;
+}
+
+::ng-deep .mat-mdc-paginator-range-label {
+    display: none;
+}

@@ -43,8 +43,8 @@ export class CreateDestinationComponent implements OnInit {
         private authService: AuthService,
     ) {
         this.fg = new FormGroup({
-            name: new FormControl('123', [Validators.required, Validators.minLength(3)]),
-            description: new FormControl('asdqwerzxdfasedweqe qwe', [Validators.required, Validators.minLength(10)]),
+            name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+            description: new FormControl('', [Validators.required, Validators.minLength(10)]),
             photo: new FormControl(''),
             latitude: new FormControl(''),
             longitude: new FormControl(''),

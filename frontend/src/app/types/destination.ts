@@ -7,6 +7,7 @@ export interface Destination {
     photo: string;
     latitude: number;
     longitude: number;
+    location: string;
     modified_at: string;
     user: number;
 }
