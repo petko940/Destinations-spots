@@ -74,7 +74,7 @@
                     <hr class="w-5/6 mx-auto pb-2">
                 </li>
             </ul>
-            <mat-paginator *ngIf="!isLoading && comments.length" [length]="commentsCount" (page)="onPageChange($event)"
+            <mat-paginator *ngIf="!isLoading && comments.length > 5" [length]="commentsCount" (page)="onPageChange($event)"
                 [hidePageSize]="true" [pageSize]="pageSize" [showFirstLastButtons]="true">
             </mat-paginator>
 
