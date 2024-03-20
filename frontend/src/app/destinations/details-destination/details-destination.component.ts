@@ -49,7 +49,7 @@ export class DetailsDestinationComponent implements OnInit {
     userId!: any;
     username!: string;
 
-    pageSize: number = 7;
+    pageSize: number = 5;
     pageIndex: number = 0;
     commentsCount: number = 0;
     displayedComments: any[] = [];
