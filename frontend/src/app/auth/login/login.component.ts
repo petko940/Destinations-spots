@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from '../auth.service';
-import sha256 from 'sha256'; // Import SHA256 library
 import { Router } from '@angular/router';
+import sha256 from 'sha256';
 
 
 @Component({
@@ -11,11 +11,7 @@ import { Router } from '@angular/router';
     styleUrl: './login.component.css',
 })
 export class LoginComponent {
-    private username!: string;
-    private password!: string;
-
     loginForm: FormGroup;
-
     errorMessage: string = '';
 
     constructor(
@@ -29,19 +25,19 @@ export class LoginComponent {
         });
     }
 
-    onSubmit() {        
+    onSubmit() {
         if (!this.loginForm.value.username || !this.loginForm.value.password) {
             this.errorMessage = 'Please enter both username and password';
             return;
         }
 
-        this.username = this.loginForm.value.username;
-        this.password = this.loginForm.value.password;
+        const username = this.loginForm.value.username;
+        const password = this.loginForm.value.password;
 
-        const hashedPassword = sha256(this.password);
+        const hashedPassword = sha256(password);
 
         const credentials = {
-            username: this.username,
+            username: username,
             password: hashedPassword,
         };
 
