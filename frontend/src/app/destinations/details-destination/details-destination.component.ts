@@ -1,6 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Destination } from '../../types/destination';
-import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -17,6 +16,7 @@ import { DeleteDestinationComponent } from '../delete-destination/delete-destina
 import { DetailsDestinationService } from '../services/details-destination.service';
 import { CommentsService } from '../services/comments.service';
 import { ShowImageComponent } from './show-image/show-image.component';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 
 
 @Component({
@@ -25,6 +25,8 @@ import { ShowImageComponent } from './show-image/show-image.component';
     styleUrl: './details-destination.component.css'
 })
 export class DetailsDestinationComponent implements OnInit {
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+
     isLoading: boolean = true
     destination!: Destination;
     map!: Map;
@@ -46,6 +48,11 @@ export class DetailsDestinationComponent implements OnInit {
 
     userId!: any;
     username!: string;
+
+    pageSize: number = 7;
+    pageIndex: number = 0;
+    commentsCount: number = 0;
+    displayedComments: any[] = [];
 
     constructor(
         private route: ActivatedRoute,
@@ -202,6 +209,8 @@ export class DetailsDestinationComponent implements OnInit {
         this.commentService.fetchComments(this.destinationId)
             .subscribe(commentData => {
                 this.comments = commentData.reverse();
+                this.commentsCount = this.comments.length;
+                this.updateDisplayedComments();
 
             }, error => {
                 console.log(error);
@@ -231,6 +240,17 @@ export class DetailsDestinationComponent implements OnInit {
                 console.log(error);
                 this.submitErrorMessage = 'An error occurred. Please try again.';
             });
+    }
+
+    onPageChange(e: PageEvent) {
+        this.pageIndex = e.pageIndex;
+        this.updateDisplayedComments();
+    }
+
+    updateDisplayedComments() {
+        const startIndex = this.pageIndex * this.pageSize;
+        const endIndex = startIndex + this.pageSize;
+        this.displayedComments = this.comments.slice(startIndex, endIndex);
     }
 
     charactersCount(field: string): void {

@@ -33,17 +33,23 @@
     </div>
 
     <div class="flex justify-center pb-5 gap-4">
-        <h2 class="text-2xl text-stone-200 text-center w-5/6 mx-auto pb-5">
-            {{ destination.description }}
-        </h2>
+        <div class="text-2xl text-stone-200 text-center w-5/6 mx-auto pb-5">
+            <h1 class="text-lg border-b-2 w-3/4 mx-auto pb-1">
+                {{ destination.location }}
+            </h1>
+
+            <h2 class="pt-4">
+                {{ destination.description }}
+            </h2>
+        </div>
 
         <div *ngIf="destination.photo; else noPhoto" class="w-1/3">
-            <img (click)="openFullImage('500ms', '500ms')" class="max-h-svh mx-auto rounded-sm"
+            <img (click)="openFullImage('500ms', '500ms')" class="max-h-[65svh] mx-auto rounded-sm cursor-pointer"
                 src="{{ destination.photo }}" alt="">
-            <h1 class="text-sm text-white">click to see image bigger</h1>
+            <h1 class="text-sm text-white text-center">click to see image bigger</h1>
         </div>
         <ng-template #noPhoto>
-            <img class="w-1/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
+            <img class="w-1/5 h-1/5 mx-auto" src="./assets/no-image-available.jpg" alt="">
         </ng-template>
     </div>
 
@@ -59,12 +65,20 @@
             <h2 class="text-2xl text-emerald-100 text-left pb-2">Comments</h2>
             <hr>
             <ul>
-                <li *ngFor="let comment of comments" class="text-white text-xl">
-                    <h1 class="font-bold py-1">{{ comment.name }}</h1>
+                <li *ngFor="let comment of displayedComments; let i = index" class="text-white text-xl">
+                    <div class="flex gap-7">
+                        <span class="py-1">{{ comments.length - (pageIndex * pageSize + i) }}.</span>
+                        <h1 class="font-bold py-1">{{ comment.name }}</h1>
+                    </div>
                     <div class="pb-3 break-all">{{ comment.comment }}</div>
                     <hr class="w-5/6 mx-auto pb-2">
                 </li>
             </ul>
+            <mat-paginator *ngIf="!isLoading && comments.length" [length]="commentsCount" (page)="onPageChange($event)"
+                [hidePageSize]="true" [pageSize]="pageSize" [showFirstLastButtons]="true">
+            </mat-paginator>
+
+            <h1 *ngIf="!comments.length" class="text-xl text-zinc-200 py-2">No comments yet.</h1>
         </div>
 
         <form class="flex flex-col gap-1 w-1/3" [formGroup]="addCommentForm" (ngSubmit)="addComment()">
