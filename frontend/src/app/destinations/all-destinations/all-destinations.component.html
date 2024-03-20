@@ -1,21 +1,26 @@
 <app-loader [loading]="isLoading" />
 
-<div *ngIf="isLoggedIn" class="flex justify-center">
+<div *ngIf="isLoggedIn && !isLoading" class="flex justify-center">
     <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6"> show my
 </div>
 
 <div class="flex gap-5">
     <div class="flex flex-col items-end gap-8 pl-16 p-3 text-white w-1/2">
-        <ng-container *ngFor="let destination of allDestinations; let i = index">
+        <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 === 0"
                 class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
 
                 <p class="text-3xl pb-5">{{ destination.name }}</p>
-                <!-- TODO: add link to profile -->
-                <h1>Made by: <span class="text-xl text-green-400">{{ destination.user | allDestinations | async }}</span></h1>
+
+                <h1>Made by:
+                    <span [routerLink]="['/profile', destination.user | allDestinations | async]"
+                        class="text-xl text-green-400 cursor-pointer">
+                        {{ destination.user | allDestinations | async}}
+                    </span>
+                </h1>
 
                 <div *ngIf="destination.photo; else noPhoto">
-                    <img class="w-5/6 max-h-svh mx-auto" src="{{ destination.photo }}" alt="">
+                    <img class="w-5/6 max-h-[65svh] mx-auto" src="{{ destination.photo }}" alt="">
                 </div>
                 <ng-template #noPhoto>
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
@@ -39,16 +44,21 @@
     </div>
 
     <div class="flex flex-col items-start gap-8 pr-16 p-3 text-white w-1/2">
-        <ng-container *ngFor="let destination of allDestinations; let i = index">
+        <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 !== 0"
                 class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
 
                 <p class="text-3xl pb-5">{{ destination.name }}</p>
 
-                <h1>Made by: <span class="text-xl text-green-400">{{ destination.user | allDestinations | async }}</span></h1>
+                <h1>Made by:
+                    <span [routerLink]="['/profile', destination.user | allDestinations | async]"
+                        class="text-xl text-green-400 cursor-pointer">
+                        {{ destination.user | allDestinations | async}}
+                    </span>
+                </h1>
 
                 <div *ngIf="destination.photo; else noPhoto">
-                    <img class="w-5/6 max-h-svh mx-auto" src="{{ destination.photo }}" alt="">
+                    <img class="w-5/6 max-h-[65svh] mx-auto" src="{{ destination.photo }}" alt="">
                 </div>
                 <ng-template #noPhoto>
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
@@ -71,3 +81,7 @@
         </ng-container>
     </div>
 </div>
+
+<mat-paginator *ngIf="!isLoading" [length]="destionationsCount" (page)="onPageChange($event)" [hidePageSize]="true"
+    [pageSize]="pageSize" [showFirstLastButtons]="true" class="w-3/4 mx-auto">
+</mat-paginator>
