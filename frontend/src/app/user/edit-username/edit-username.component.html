@@ -28,7 +28,7 @@
             </mat-error>
         </mat-form-field>
 
-        <div class="flex justify-center items-center gap-5 py-3">
+        <div *ngIf="!disabled" class="flex justify-center items-center gap-5 py-3">
             <a [routerLink]="['/profile', username]">
                 <i class="fa-solid fa-arrow-left text-white text-3xl p-2 hover:text-teal-500 duration-500"></i>
             </a>
