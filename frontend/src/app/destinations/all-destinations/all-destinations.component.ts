@@ -21,7 +21,6 @@ export class AllDestinationsComponent implements OnInit {
     isLoading: boolean = true;
     showMyDestinations: boolean = false;
     allDestinations: Destination[] = [];
-    myDestinations: Destination[] = [];
     myDestinationCount: number = 0;
 
     copyAllDestinations: Destination[] = [];
@@ -39,7 +38,6 @@ export class AllDestinationsComponent implements OnInit {
 
     ngOnInit() {
         this.fetchAllDestinations();
-        this.updateDisplayedDestinations();
     }
 
     fetchAllDestinations() {
@@ -92,9 +90,8 @@ export class AllDestinationsComponent implements OnInit {
         this.showMyDestinations = !this.showMyDestinations
 
         if (this.showMyDestinations) {
-            this.myDestinations = this.allDestinations.filter(destination => destination.user.toString() == this.authService.getCurrentUserId());
-            this.allDestinations = [...this.myDestinations];
-            this.destionationsCount = this.myDestinations.length;
+            this.allDestinations = this.allDestinations.filter(destination => destination.user.toString() == this.authService.getCurrentUserId());
+            this.destionationsCount = this.allDestinations.length;
         } else {
             this.allDestinations = [...this.copyAllDestinations];
             this.destionationsCount = this.allDestinations.length;
@@ -103,6 +100,7 @@ export class AllDestinationsComponent implements OnInit {
         this.pageIndex = 0;
         this.updateDisplayedDestinations();
         this.paginator.firstPage();
+
     }
 
     onPageChange(e: PageEvent) {
