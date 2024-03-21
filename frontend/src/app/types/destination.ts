@@ -9,5 +9,6 @@ export interface Destination {
     longitude: number;
     location: string;
     modified_at: string;
+    created_at: string;
     user: number;
 }
