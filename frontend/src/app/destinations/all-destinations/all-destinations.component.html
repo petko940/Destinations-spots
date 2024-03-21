@@ -82,6 +82,6 @@
     </div>
 </div>
 
-<mat-paginator *ngIf="!isLoading && allDestinations.length > 4" [length]="destionationsCount" (page)="onPageChange($event)" [hidePageSize]="true"
+<mat-paginator *ngIf="!isLoading" [length]="destionationsCount" (page)="onPageChange($event)" [hidePageSize]="true"
     [pageSize]="pageSize" [showFirstLastButtons]="true" class="w-3/4 mx-auto">
 </mat-paginator>
