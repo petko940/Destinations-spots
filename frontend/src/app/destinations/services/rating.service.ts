@@ -6,21 +6,23 @@ import { environment } from '../../../environments/environment.development';
   providedIn: 'root'
 })
 export class RatingService {
-
+  apiUrl = environment.dbApiUrl;
+  
   constructor(private http: HttpClient) { }
 
   fetchRating(destinationId: number) {
-    const apiUrl = environment.dbApiUrl;
-    return this.http.get<any>(`${apiUrl}destination/${destinationId}/rating`);
+    return this.http.get<any>(`${this.apiUrl}destination/${destinationId}/rating`);
+  }
+
+  fetchAllRatings() {
+    return this.http.get<any>(`${this.apiUrl}all-ratings`);
   }
 
   postRating(destinationId: number, payload: any) {
-    const apiUrl = environment.dbApiUrl;
-    return this.http.post<any>(`${apiUrl}destination/${destinationId}/rating/`, payload);
+    return this.http.post<any>(`${this.apiUrl}destination/${destinationId}/rating/`, payload);
   }
 
   deleteRating(destinationId: number, userId: number) {
-    const apiUrl = environment.dbApiUrl;
-    return this.http.delete<any>(`${apiUrl}destination/${destinationId}/rating/delete?user=${userId}`);
+    return this.http.delete<any>(`${this.apiUrl}destination/${destinationId}/rating/delete?user=${userId}`);
   }
 }

@@ -13,8 +13,8 @@ import { RouterModule } from '@angular/router';
 import { MatDialogModule, } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from './delete-destination/delete-destination.component';
 import { ShowImageComponent } from './details-destination/show-image/show-image.component';
-import { AllDestinationsPipe } from './all-destinations/all-destinations.pipe';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { GetUsernamePipe } from '../shared/pipes/get-username.pipe';
 
 @NgModule({
   declarations: [
@@ -24,7 +24,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EditDestinationComponent,
     DeleteDestinationComponent,
     ShowImageComponent,
-    AllDestinationsPipe
+    GetUsernamePipe
   ],
   imports: [
     CommonModule,
@@ -44,7 +44,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     EditDestinationComponent,
     DeleteDestinationComponent,
     DestinationsRoutingModule,
-    MatDialogModule
+    MatDialogModule,
   ],
   providers: [
     CreateDestinationComponent,
