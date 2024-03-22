@@ -54,7 +54,7 @@
     </div>
 
     <div class="text-white flex flex-col">
-        <p>Made by: {{ username }} </p>
+        <p [routerLink]="['/profile', username]" class="cursor-pointer">Made by: {{ username }} </p>
         <p>Last modified on: {{ destination.modified_at | date: 'EEEE dd/MM/yyyy' }}</p>
     </div>
 
