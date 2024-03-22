@@ -6,11 +6,14 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root'
 })
 export class AllDestinationsService {
-
+  private apiUrl = environment.dbApiUrl
   constructor(private http: HttpClient) { }
 
   fetchAllDestinations() {
-    const apiUrl = environment.dbApiUrl;
-    return this.http.get<any>(`${apiUrl}all-destinations/`);
+    return this.http.get<any>(`${this.apiUrl}all-destinations/`);
+  }
+
+  fetchMostRecentCreatedDestinations() {
+    return this.http.get<any>(`${this.apiUrl}most-recent-created-destinations/`);
   }
 }
