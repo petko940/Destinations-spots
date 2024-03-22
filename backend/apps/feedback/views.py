@@ -1,5 +1,7 @@
+from django.db.models import Avg
 from rest_framework import generics, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from apps.destinations.models import Destination
 from apps.feedback.models import Rating, Comment
@@ -33,6 +35,23 @@ class DestinationRating(generics.ListCreateAPIView):
         serializer.save()
 
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class GetAllRatings(APIView):
+    serializer_class = RatingSerializer
+    lookup_field = 'destination_id'
+
+    def get(self, request, *args, **kwargs):
+        average_stars_per_destination = Rating.objects.values('destination_id').annotate(avg_stars=Avg('stars'))
+
+        data = []
+
+        for item in sorted(average_stars_per_destination, key=lambda x: x['avg_stars'], reverse=True):
+            destination_id = item['destination_id']
+            average_stars = item['avg_stars']
+            data.append({'destination_id': destination_id, 'average_stars': average_stars})
+
+        return Response(data[:3], status=status.HTTP_200_OK)
 
 
 class DeleteRating(generics.DestroyAPIView):
