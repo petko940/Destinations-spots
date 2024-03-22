@@ -72,3 +72,8 @@ class EditDestination(generics.RetrieveUpdateAPIView):
 class DeleteDestination(generics.DestroyAPIView):
     serializer_class = DestinationSerializer
     queryset = Destination.objects.all()
+
+
+class ThreeMostRecentCreatedDestinations(generics.ListAPIView):
+    serializer_class = DestinationSerializer
+    queryset = Destination.objects.order_by('-created_at')[:3]

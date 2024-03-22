@@ -1,7 +1,7 @@
 from django.urls import path
 
 from apps.destinations.views import CreateDestination, AllDestinations, DetailDestination, DeleteDestination, \
-    EditDestination
+    EditDestination, ThreeMostRecentCreatedDestinations
 
 urlpatterns = [
     path('api/create-destination/', CreateDestination.as_view(), name='create-destination'),
@@ -9,4 +9,6 @@ urlpatterns = [
     path('api/destination/<int:pk>/', DetailDestination.as_view(), name='detail-destination'),
     path('api/edit-destination/<int:pk>/', EditDestination.as_view(), name='edit-destination'),
     path('api/delete-destination/<int:pk>/', DeleteDestination.as_view(), name='delete-destination'),
+    path('api/most-recent-created-destinations/', ThreeMostRecentCreatedDestinations.as_view(),
+         name='most-recent-created-destinations'),
 ]
