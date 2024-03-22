@@ -13,6 +13,7 @@ class Destination(models.Model):
     latitude = models.FloatField()
     longitude = models.FloatField()
     modified_at = models.DateTimeField(auto_now=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     user = models.ForeignKey(
         to=UserModel,
         on_delete=models.CASCADE,
