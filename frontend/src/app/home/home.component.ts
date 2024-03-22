@@ -2,9 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Destination } from '../types/destination';
 import { AllDestinationsService } from '../destinations/services/all-destinations.service';
 import { RatingService } from '../destinations/services/rating.service';
-import { Rating } from '../types/rating';
 import { DetailsDestinationService } from '../destinations/services/details-destination.service';
-import { DetailsDestinationComponent } from '../destinations/details-destination/details-destination.component';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -16,19 +14,19 @@ export class HomeComponent implements OnInit {
     isLoading = true;
 
     destinationsWithHighestRating: Destination[] | any = [];
-
     allRatings = [];
+
+    mostRecentCreatedDestinations: Destination[] = [];
 
     constructor(
         private allDestinationsService: AllDestinationsService,
         private ratingService: RatingService,
         private detailsDestinationService: DetailsDestinationService,
-        private authService: AuthService
     ) { }
 
     ngOnInit() {
         this.fetchAverageRatingPerDestination();
-
+        this.fetchMostRecentCreatedDestinations();
     }
 
     fetchAverageRatingPerDestination() {
@@ -60,7 +58,6 @@ export class HomeComponent implements OnInit {
                 this.destinationsWithHighestRating.push(destinationWithRating);
 
                 this.destinationsWithHighestRating = this.destinationsWithHighestRating.sort((a: any, b: any) => b.averageStars - a.averageStars);
-
             });
     }
 
@@ -70,6 +67,16 @@ export class HomeComponent implements OnInit {
             starsArray.push(i);
         }
         return starsArray;
+    }
+
+    fetchMostRecentCreatedDestinations() {
+        this.allDestinationsService.fetchMostRecentCreatedDestinations()
+            .subscribe((response: any) => {
+                this.mostRecentCreatedDestinations = response;
+            }, error => {
+                this.isLoading = false;
+                console.log(error);
+            })
     }
 
 }
