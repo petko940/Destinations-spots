@@ -24,7 +24,6 @@ import { GetUsernamePipe } from '../shared/pipes/get-username.pipe';
     EditDestinationComponent,
     DeleteDestinationComponent,
     ShowImageComponent,
-    GetUsernamePipe
   ],
   imports: [
     CommonModule,
