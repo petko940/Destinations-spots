@@ -1,7 +1,41 @@
-<p>home works!</p>
+<app-loader [loading]="isLoading"></app-loader>
 
+<h1 class="text-white text-3xl text-center py-7">
+    Share your travel experiences with fellow travelers.
+</h1>
 
-<h1>{{ destinations }}</h1>
+<h2 *ngIf="!isLoading" class="text-sky-200 text-2xl text-center py-4">
+    Highest rated destinations
+</h2>
 
-<!-- {{ sortedDestinationsByRating() }} -->
+<div *ngIf="!isLoading" class="flex flex-wrap justify-center items-center gap-10">
+    <div *ngFor="let destination of destinationsWithHighestRating" [routerLink]="['/destination', destination.id]"
+        class="flex flex-col p-8 w-[300px] rounded-lg border-2 cursor-pointer">
 
+        <div *ngIf="destination.photo; else noPhoto" class="mx-auto"
+            [style.background-image]="'url(' + destination.photo + ')'" [style.background-size]="'cover'"
+            [style.background-position]="'center'" [style.background-repeat]="'no-repeat'" [style.height.px]="200"
+            [style.width.px]="200">
+        </div>
+        <ng-template #noPhoto>
+            <img class="h-[200px] w-[168px] mx-auto" src="./assets/no-image-available.jpg" alt="">
+        </ng-template>
+
+        <div class="py-5 text-2xl text-zinc-100 text-center">
+            {{ destination.name | slice: 12 }}
+        </div>
+
+        <div class="flex justify-center">
+            <div *ngFor="let _ of showStars(destination.averageStars)">
+                <i class="fa-solid fa-star text-yellow-500 text-3xl"></i>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<hr class="mt-5 w-4/5 mx-auto">
+
+<h2 *ngIf="!isLoading" class="text-sky-200 text-2xl text-center py-4">
+    Most recent destinations added
+</h2>

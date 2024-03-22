@@ -5,7 +5,6 @@ import { RatingService } from '../destinations/services/rating.service';
 import { Rating } from '../types/rating';
 import { DetailsDestinationService } from '../destinations/services/details-destination.service';
 import { DetailsDestinationComponent } from '../destinations/details-destination/details-destination.component';
-import { forkJoin } from 'rxjs';
 import { AuthService } from '../auth/auth.service';
 
 @Component({
@@ -14,52 +13,63 @@ import { AuthService } from '../auth/auth.service';
     styleUrl: './home.component.css'
 })
 export class HomeComponent implements OnInit {
-    destinations: Destination[] = [];
-    destinationsRatings: any = {};
+    isLoading = true;
+
+    destinationsWithHighestRating: Destination[] | any = [];
+
+    allRatings = [];
 
     constructor(
         private allDestinationsService: AllDestinationsService,
         private ratingService: RatingService,
+        private detailsDestinationService: DetailsDestinationService,
         private authService: AuthService
     ) { }
 
     ngOnInit() {
-        this.fetchAllDestinations();
+        this.fetchAverageRatingPerDestination();
 
     }
 
-    fetchAllDestinations() {
-        this.allDestinationsService.fetchAllDestinations()
-            .subscribe((response: []) => {
-                const observables = response.map((dest: Destination) =>
-                    this.ratingService.fetchRating(dest.id)
-                );
+    fetchAverageRatingPerDestination() {
+        this.ratingService.fetchAllRatings()
+            .subscribe((response: any) => {
+                this.allRatings = response;
 
-                forkJoin(observables)
-                    .subscribe((data: any[]) => {
-                        data.forEach((ratingData, index) => {
-                            const dest: Destination = response[index];
-                            let totalStars = 0;
-                            ratingData.forEach((r: Rating) => {
-                                totalStars += r.stars;
-                            });
-                            this.destinationsRatings[dest.id] = totalStars / ratingData.length;
-                        });
+                Object.values(this.allRatings).forEach((value: any) => {
+                    const destId = value['destination_id'];
+                    this.fetchDestinationsWithBestRating(destId, value['average_stars']);
 
-                        this.sortedDestinationsByRating();
-                    });
+                });
+                this.isLoading = false;
+
             }, error => {
+                this.isLoading = false;
                 console.log(error);
+            })
+    }
+
+    fetchDestinationsWithBestRating(destinationId: number, averageStars: number) {
+        this.detailsDestinationService.fetchDestination(destinationId).
+            subscribe((response: any) => {
+                averageStars = Math.round(averageStars);
+                const destinationWithRating = {
+                    ...response,
+                    averageStars
+                }
+                this.destinationsWithHighestRating.push(destinationWithRating);
+
+                this.destinationsWithHighestRating = this.destinationsWithHighestRating.sort((a: any, b: any) => b.averageStars - a.averageStars);
+
             });
     }
 
-    sortedDestinationsByRating() {
-        const ratingsArray = Object.entries(this.destinationsRatings);
-
-        ratingsArray.sort((a: any, b: any) => b[1] - a[1]);
-
-        console.log(ratingsArray.slice(0, 2));
+    showStars(averageStars: number) {
+        const starsArray = [];
+        for (let i = 0; i < averageStars; i++) {
+            starsArray.push(i);
+        }
+        return starsArray;
     }
-
 
 }
