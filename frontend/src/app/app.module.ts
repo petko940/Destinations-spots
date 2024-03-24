@@ -14,6 +14,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { UserModule } from './user/user.module';
 import { HomeComponent } from './home/home.component';
 import { ErrorComponent } from './error/error.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -22,6 +23,7 @@ import { ErrorComponent } from './error/error.component';
     AboutComponent,
     HomeComponent,
     ErrorComponent,
+    SearchComponent,
   ],
   imports: [
     BrowserModule,
