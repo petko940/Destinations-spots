@@ -1,23 +1,41 @@
-import { ChangeDetectorRef, Component, OnChanges, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from '../../auth/auth.service';
+import { Router } from '@angular/router';
+import { SearchService } from '../../search/search.service';
 
 @Component({
-  selector: 'app-navigation',
-  templateUrl: './navigation.component.html',
-  styleUrl: './navigation.component.css'
+    selector: 'app-navigation',
+    templateUrl: './navigation.component.html',
+    styleUrl: './navigation.component.css'
 })
 export class NavigationComponent {
-  constructor(private authService: AuthService) { }
+    searchText: string = '';
 
-  isLoggedIn(): boolean {
-    return this.authService.isLoggedIn();
-  }
+    constructor(
+        private authService: AuthService,
+        private router: Router,
+        private searchService: SearchService,
+    ) { }
 
-  getCurrentUsername(): string | null {
-    return this.authService.getCurrentUsername();
-  }
+    isLoggedIn(): boolean {
+        return this.authService.isLoggedIn();
+    }
 
-  logout() {
-    this.authService.logout();
-  }
+    getCurrentUsername(): string | null {
+        return this.authService.getCurrentUsername();
+    }
+
+    searchResults() {
+        this.searchText = this.searchText.trim();
+        if (this.searchText === '') {
+            return;
+        }
+        this.searchService.searchValue = this.searchText;
+        this.router.navigate(['/search', this.searchText]);
+        this.searchText = '';
+    }
+
+    logout() {
+        this.authService.logout();
+    }
 }
