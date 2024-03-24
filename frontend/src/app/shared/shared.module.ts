@@ -5,6 +5,7 @@ import { DeleteLoaderComponent } from './delete-loader/delete-loader.component';
 import { EditLoadedComponent } from './edit-loaded/edit-loaded.component';
 import { SlicePipe } from './pipes/slice.pipe';
 import { GetUsernamePipe } from './pipes/get-username.pipe';
+import { ElapsedTimePipe } from './pipes/elapsed-time.pipe';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { GetUsernamePipe } from './pipes/get-username.pipe';
     DeleteLoaderComponent,
     EditLoadedComponent,
     SlicePipe,
-    GetUsernamePipe
+    GetUsernamePipe,
+    ElapsedTimePipe,
   ],
   imports: [
     CommonModule,
@@ -23,7 +25,8 @@ import { GetUsernamePipe } from './pipes/get-username.pipe';
     DeleteLoaderComponent,
     EditLoadedComponent,
     SlicePipe,
-    GetUsernamePipe
+    GetUsernamePipe,
+    ElapsedTimePipe,
   ]
 })
 export class SharedModule { }
