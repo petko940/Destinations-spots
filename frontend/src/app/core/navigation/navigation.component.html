@@ -5,9 +5,11 @@
                 <a routerLink=""><img src="./assets/home-nav.png" alt="" class="w-16"></a>
             </li>
             <li class="relative">
-                <input type="text" placeholder="Search"
-                    class="max-w-52 text-gray-700 border-2 border-white rounded py-1 px-3 pr-10">
-                <button type="button" class="absolute inset-y-0 right-0 mr-2">
+                <input [(ngModel)]="searchText" type="text" placeholder="Search"
+                    class="max-w-52 text-gray-700 border-2 border-white rounded py-1 px-3 pr-10"
+                    (keydown.enter)="searchResults()">
+                <button (click)="searchResults()" type="button"
+                    class="absolute inset-y-0 right-0 mr-2">
                     <i class="fa-solid fa-magnifying-glass text-gray-700"></i>
                 </button>
             </li>
@@ -30,7 +32,8 @@
                 </a>
             </li>
             <li *ngIf="isLoggedIn()">
-                <a [routerLink]="['/profile', getCurrentUsername()]" routerLinkActive="active" class="border-2 border-white rounded p-2">
+                <a [routerLink]="['/profile', getCurrentUsername()]" routerLinkActive="active"
+                    class="border-2 border-white rounded p-2">
                     Profile
                 </a>
             </li>
