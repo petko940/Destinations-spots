@@ -1,16 +1,16 @@
 <app-loader [loading]="isLoading" />
 
-<div *ngIf="isLoggedIn && !isLoading" class="flex justify-center">
-    <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6"> show my
+<div *ngIf="isLoggedIn && !isLoading" class="flex justify-center pt-5 text-white">
+    <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6 mx-1">Show my destinations
 </div>
 
-<div class="flex gap-5">
-    <div class="flex flex-col items-end gap-8 pl-16 p-3 text-white w-1/2">
+<div class="flex gap-5 p-8">
+    <div class="flex flex-col items-end gap-8 pl-16 text-white w-1/2">
         <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 === 0"
                 class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
 
-                <p class="text-3xl pb-5">{{ destination.name }}</p>
+                <p class="text-3xl pb-5 break-all">{{ destination.name }}</p>
 
                 <h1>Made by:
                     <span [routerLink]="['/profile', destination.user | getUsername | async]"
@@ -43,7 +43,7 @@
         </ng-container>
     </div>
 
-    <div class="flex flex-col items-start gap-8 pr-16 p-3 text-white w-1/2">
+    <div class="flex flex-col items-start gap-8 pr-16 text-white w-1/2">
         <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 !== 0"
                 class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">

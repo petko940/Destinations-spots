@@ -1,7 +1,7 @@
 <app-loader [loading]="isLoading" />
 
 <div *ngIf="destination" class="w-2/3 mx-auto border-white border-2 p-10 m-5">
-    <h1 class="text-3xl text-cyan-300 text-center pb-3">
+    <h1 class="text-3xl text-cyan-300 text-center pb-3 break-all">
         {{ destination.name }}
     </h1>
 
@@ -38,7 +38,7 @@
                 {{ destination.location }}
             </h1>
 
-            <h2 class="pt-4">
+            <h2 class="pt-4 break-all">
                 {{ destination.description }}
             </h2>
         </div>
@@ -54,11 +54,11 @@
     </div>
 
     <div class="text-white flex flex-col">
-        <p [routerLink]="['/profile', username]" class="cursor-pointer">Made by: {{ username }} </p>
+        <p [routerLink]="['/profile', username]" class="cursor-pointer">Made by: <span class="text-green-400 text-xl">{{ username }}</span></p>
         <p>Last modified on: {{ destination.modified_at | date: 'EEEE dd/MM/yyyy' }}</p>
     </div>
 
-    <div id="map" class="h-80 pb-4"></div>
+    <div id="map" class="h-96 pb-4"></div>
 
     <div class="flex gap-5">
         <div class="flex flex-col justify-start w-2/3">

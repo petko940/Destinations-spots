@@ -37,9 +37,8 @@ export class EditUsernameComponent {
         if (this.editUsernameForm.invalid) {
             return;
         }
-
-        this.disabled = true;
-
+        this.error = '';
+        
         let newUsername = this.editUsernameForm.value.username;
         newUsername = newUsername.toLowerCase();
 
@@ -47,6 +46,7 @@ export class EditUsernameComponent {
         this.userService.editUsername(this.userId, newUsername, refreshToken)
             .subscribe((response) => {
                 this.editLoading = true;
+                this.disabled = true;
 
                 const { access, refresh } = response;
                 this.authService.saveTokens({ access, refresh });
@@ -57,6 +57,7 @@ export class EditUsernameComponent {
 
             }, (error) => {
                 this.editLoading = false;
+                this.disabled = false;
                 this.error = error.error.username;
                 console.log(error);
             })

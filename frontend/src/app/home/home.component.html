@@ -10,7 +10,7 @@
 
 <div *ngIf="!isLoading" class="flex flex-wrap justify-center items-center gap-10">
     <div *ngFor="let destination of destinationsWithHighestRating" [routerLink]="['/destination', destination.id]"
-        class="flex flex-col p-8 w-[300px] rounded-lg border-2 cursor-pointer ">
+        class="flex flex-col p-8 w-[300px] rounded-lg border-2 cursor-pointer hover:border-amber-300 duration-500">
 
         <h1 class="text-white text-lg mx-auto">Made by:
             <span class="text-green-400 font-medium">{{ destination.user | getUsername | async }}</span>
@@ -38,7 +38,7 @@
     </div>
 </div>
 
-<hr class="mt-5 w-4/5 mx-auto">
+<hr class="mt-5 w-5/6 mx-auto max-lg:w-full">
 
 <h2 *ngIf="!isLoading" class="text-sky-200 text-2xl text-center py-4">
     Most recent destinations created
@@ -46,7 +46,7 @@
 
 <div *ngIf="!isLoading" class="flex flex-wrap justify-center items-center gap-10 pb-9">
     <div *ngFor="let destination of mostRecentCreatedDestinations" [routerLink]="['/destination', destination.id]"
-        class="flex flex-col p-8 w-[300px] rounded-lg border-2 cursor-pointer backdrop-blur-sm">
+        class="flex flex-col p-8 w-[300px] rounded-lg border-2 cursor-pointer backdrop-blur-sm hover:border-emerald-300 duration-500">
 
         <h1 class="text-white text-lg mx-auto">Made by:
             <span class="text-green-400 font-medium">{{ destination.user | getUsername | async }}</span>
@@ -60,6 +60,8 @@
         <ng-template #noPhoto>
             <img class="h-[200px] w-[168px] mx-auto" src="./assets/no-image-available.jpg" alt="">
         </ng-template>
+
+        <h2 class="text-white text-center">Created {{ destination.created_at | elapsedTime }}</h2>
 
         <div class="pt-5 pb-0 text-2xl text-zinc-100 text-center">
             {{ destination.name | slice: 12 }}
