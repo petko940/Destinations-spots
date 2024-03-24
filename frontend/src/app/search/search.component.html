@@ -1,0 +1,31 @@
+<div class="text-white flex flex-wrap justify-center gap-5 p-10">
+    <div>
+        <h1 *ngIf="isFoundDestinations; else destinationsNotFound" class="text-3xl text-center text-green-100">Destinations found</h1>
+        <ng-template #destinationsNotFound>
+            <h1 class="text-3xl text-center text-green-200">Destinations not found</h1>
+        </ng-template>
+
+        <div [routerLink]="['/destination', destination.id]" *ngFor="let destination of foundDestinations"
+            class="cursor-pointer backdrop-blur-sm">
+            <div class="text-2xl border-2 border-green-600 rounded-2xl m-5 p-5">
+                <h1>Name: <span class="text-green-400">{{ destination.name }}</span></h1>
+                <h2>Description: <span class="text-green-400">{{ destination.description | slice: 20 }}</span></h2>
+                <h2>Location: <span class="text-green-400">{{ destination.location }}</span></h2>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <h1 *ngIf="isFoundUsers; else userNotFound" class="text-3xl text-center text-purple-100">Users found</h1>
+        <ng-template #userNotFound>
+            <h1 class="text-3xl text-center text-purple-200">Users not found</h1>
+        </ng-template>
+        
+        <div [routerLink]="['/profile', user.username]" *ngFor="let user of foundUsers"
+            class="cursor-pointer backdrop-blur-sm">
+            <div class="text-2xl border-2 border-purple-600 rounded-2xl m-5 p-5">
+                <h1>Username: <span class="text-purple-400">{{ user.username }}</span></h1>
+            </div>
+        </div>
+    </div>
+</div>
