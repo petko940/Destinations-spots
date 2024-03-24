@@ -20,7 +20,7 @@ class Search(APIView):
             destination_queryset = (destination_name_search |
                                     destination_description_search |
                                     destination_location_search
-                                    ).distinct()
+                                    )
 
             serializer = CombinedSerializer(
                 {'users': user_queryset,
