@@ -96,3 +96,14 @@ class DestinationComments(generics.ListCreateAPIView):
             return Response(request.data, status=status.HTTP_201_CREATED)
 
         return Response({'error': 'Invalid data'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetAllRatingsByUser(APIView):
+    serializer_class = RatingSerializer
+    lookup_field = 'user_id'
+
+    def get(self, request, *args, **kwargs):
+        user_id = self.kwargs.get('user')
+        queryset = Rating.objects.filter(user_id=user_id)
+        serializer = RatingSerializer(queryset, many=True)
+        return Response(serializer.data)
