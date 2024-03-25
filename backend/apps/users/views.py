@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import AccessToken, RefreshToken
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from apps.users.serializers import RegisterSerializer, MyTokenObtainPairSerializer, UsernameSerializer
+from apps.users.serializers import RegisterSerializer, MyTokenObtainPairSerializer, UsernameSerializer, UserIDSerializer
 
 User = get_user_model()
 
@@ -22,9 +22,15 @@ class RegisterAPIView(generics.CreateAPIView):
             login(self.request, user)
 
 
-class GetUser(generics.RetrieveAPIView):
+class GetUsernameByID(generics.RetrieveAPIView):
     serializer_class = UsernameSerializer
     queryset = User.objects.all()
+
+
+class GetUserIDByUsername(generics.RetrieveAPIView):
+    serializer_class = UserIDSerializer
+    queryset = User.objects.all()
+    lookup_field = 'username'
 
 
 class MyTokenObtainPairView(TokenObtainPairView):
