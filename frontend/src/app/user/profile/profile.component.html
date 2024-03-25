@@ -1,27 +1,43 @@
-<div *ngIf="isLoggedIn" class="text-3xl text-zinc-200 flex flex-col justify-center items-center p-10">
+<div *ngIf="isLoggedIn && isCurrentUserProfile"
+    class="text-3xl text-zinc-200 flex flex-col justify-center items-center p-8">
     <h1 class="p-2">
-        Hello <span class="font-extrabold text-lime-300">{{ username }}</span>
+        Hello <span class="font-extrabold text-lime-300">{{ currentUsername }}</span>
     </h1>
 
-    <h2 class="text-2xl tracking-widest">
+    <h2 class="text-2xl tracking-widest mb-4">
         Welcome to your profile
     </h2>
-    not ready yet
 
-    <a [routerLink]="['/profile', username, 'edit-username']" class="text-3xl text-white bg-black p-10">
-        change username
+    <a [routerLink]="['/profile', currentUsername, 'edit-username']"
+        class="text-xl text-white bg-green-700 p-3 rounded-md">
+        Change username
     </a>
+</div>
 
+<div *ngIf="!isCurrentUserProfile" class="text-3xl text-zinc-200 flex flex-col justify-center items-center p-8">
+    <h1><span class="font-extrabold text-lime-300">{{ notCurrentUserProfile }}</span>'s profile</h1>
 </div>
 
 
 <div
-    class="w-3/5 text-slate-200 mx-auto border-2 border-white rounded-xl flex flex-col justify-center items-center p-5">
+    class="w-3/5 text-slate-200 mx-auto border-2 border-white rounded-xl flex flex-col justify-center items-center p-5 mb-7 backdrop-blur-sm">
     <h3 class="text-2xl pb-3">
         Information
     </h3>
-    <hr class="p-4 w-5/6">
+    <hr class="mb-4 w-5/6">
 
-    <!-- <h4>Destinations created: {{ destinationsCount }}</h4> -->
-    <h4>Destinations created: destinationsCount </h4>
+    <h4 class="text-xl">Destinations created: <span class="text-orange-300">{{ destsCount }}</span></h4>
+
+    <div *ngIf="destsCount > 0">
+        <h4 class="text-xl mb-1 text-center">Destinations names:</h4>
+        <div
+            class="mb-1 flex flex-wrap justify-center items-center gap-3 before:content-['•'] before:text-orange-300 after:content-['•'] after:text-orange-300">
+            <div *ngFor="let destination of destinationsByUser; let i = last" class="text-lg">
+                {{ destination.name }}
+                <span *ngIf="!i">,</span>
+            </div>
+        </div>
+    </div>
+
+    <h4 *ngIf="isCurrentUserProfile" class="text-xl">You rated destinations <span class="text-orange-300">{{ ratingsCount }}</span> times</h4>
 </div>
