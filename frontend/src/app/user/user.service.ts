@@ -15,4 +15,9 @@ export class UserService {
   editUsername(userId: number, newUsername: string, refreshToken: any) {
     return this.http.put<any>(`${this.apiUrl}user/${userId}/change-username/`, { username: newUsername, refresh_token: refreshToken })
   }
+
+  getAllRatingsByUser(userId: number) {
+    return this.http.get<any>(`${this.apiUrl}all-ratings-by-user/${userId}`)
+  }
+
 }
