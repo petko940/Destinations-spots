@@ -71,6 +71,10 @@ export class AuthService {
     return this.http.get<any>(`${this.apiUrl}user/${userId}`);
   }
 
+  getUserIdByUsername(username: string) {
+    return this.http.get<any>(`${this.apiUrl}user/${username}`);
+  }
+
   getCookie(name: string) {
     const cookies = document.cookie.split(';');
     for (let i = 0; i < cookies.length; i++) {
@@ -82,7 +86,4 @@ export class AuthService {
     return null;
   }
 
-  updateUsername(userId: string, newUsername: string) {
-    return this.http.put(`${this.apiUrl}user/${userId}/change-username/`, { username: newUsername });
-  }
 }
