@@ -4,7 +4,7 @@
     <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6 mx-1">Show my destinations
 </div>
 
-<div class="flex gap-5 p-8">
+<div *ngIf="displayedDestinations.length > 0" class="flex gap-5 p-8">
     <div class="flex flex-col items-end gap-8 pl-16 text-white w-1/2">
         <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 === 0"
@@ -48,7 +48,7 @@
             <div *ngIf="i % 2 !== 0"
                 class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
 
-                <p class="text-3xl pb-5">{{ destination.name }}</p>
+                <p class="text-3xl pb-5 break-all">{{ destination.name }}</p>
 
                 <h1>Made by:
                     <span [routerLink]="['/profile', destination.user | getUsername | async]"
@@ -82,6 +82,13 @@
     </div>
 </div>
 
+<div *ngIf="displayedDestinations.length === 0" class="text-slate-200 flex flex-col justify-center items-center gap-2 p-5">
+    <h1 class="text-3xl">No destinations found!</h1>
+    <a [routerLink]="['/create']" class="text-2xl bg-green-600 py-2 px-3 mx-auto cursor-pointer rounded-md">
+        Create
+    </a>
+</div>
+
 <mat-paginator *ngIf="!isLoading" [length]="destionationsCount" (page)="onPageChange($event)" [hidePageSize]="true"
-    [pageSize]="pageSize" [showFirstLastButtons]="true" class="w-3/4 mx-auto">
+    [pageSize]="pageSize" [showFirstLastButtons]="true" class="w-3/4 mx-auto mb-7">
 </mat-paginator>
