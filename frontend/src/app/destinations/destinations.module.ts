@@ -14,7 +14,6 @@ import { MatDialogModule, } from '@angular/material/dialog';
 import { DeleteDestinationComponent } from './delete-destination/delete-destination.component';
 import { ShowImageComponent } from './details-destination/show-image/show-image.component';
 import { MatPaginatorModule } from '@angular/material/paginator';
-import { GetUsernamePipe } from '../shared/pipes/get-username.pipe';
 
 @NgModule({
   declarations: [
