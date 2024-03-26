@@ -4,11 +4,11 @@
     <input (click)="toggleShowMyDestinations()" type="checkbox" class="w-6 h-6 mx-1">Show my destinations
 </div>
 
-<div *ngIf="displayedDestinations.length > 0" class="flex gap-5 p-8">
-    <div class="flex flex-col items-end gap-8 pl-16 text-white w-1/2">
+<div *ngIf="displayedDestinations.length > 0" class="flex gap-5 p-8 max-lg:p-4">
+    <div class="flex flex-col items-end gap-8 pl-16 max-lg:pl-0 text-white w-1/2">
         <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 === 0"
-                class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
+                class="flex flex-col text-center w-4/5 max-lg:w-full border-white border-2 rounded p-7 backdrop-blur-md">
 
                 <p class="text-3xl pb-5 break-all">{{ destination.name }}</p>
 
@@ -26,7 +26,7 @@
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
                 </ng-template>
 
-                <div class="flex justify-center gap-1 pt-2 text-3xl text-yellow-500">
+                <div class="flex justify-center gap-1 pt-2 text-3xl max-lg:text-xl text-yellow-500">
                     <div *ngFor="let rating of filledStarsMap[destination.id]">
                         <i class="fa-solid fa-star"></i>
                     </div>
@@ -43,10 +43,10 @@
         </ng-container>
     </div>
 
-    <div class="flex flex-col items-start gap-8 pr-16 text-white w-1/2">
+    <div class="flex flex-col items-start gap-8 pr-16 max-lg:pr-0 text-white w-1/2">
         <ng-container *ngFor="let destination of displayedDestinations; let i = index">
             <div *ngIf="i % 2 !== 0"
-                class="flex flex-col text-center w-4/5 border-white border-2 rounded p-7 backdrop-blur-md">
+                class="flex flex-col text-center w-4/5 max-lg:w-full border-white border-2 rounded p-7 backdrop-blur-md">
 
                 <p class="text-3xl pb-5 break-all">{{ destination.name }}</p>
 
@@ -64,7 +64,7 @@
                     <img class="w-2/5 max-h-svh mx-auto" src="./assets/no-image-available.jpg" alt="">
                 </ng-template>
 
-                <div class="flex justify-center gap-1 pt-2 text-3xl text-yellow-500">
+                <div class="flex justify-center gap-1 pt-2 text-3xl max-lg:text-xl text-yellow-500">
                     <div *ngFor="let rating of filledStarsMap[destination.id]">
                         <i class="fa-solid fa-star"></i>
                     </div>
