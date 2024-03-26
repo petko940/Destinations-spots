@@ -38,6 +38,7 @@ export class DetailsDestinationComponent implements OnInit {
     allRatingsCount!: number;
     averageRating!: number;
 
+    informationAboutRating: string = '';
     comments: Comment[] = [];
 
     addCommentForm: FormGroup;
@@ -98,6 +99,11 @@ export class DetailsDestinationComponent implements OnInit {
                     this.isLoading = false
                 });
         });
+        if (this.authService.isLoggedIn()) {
+            this.informationAboutRating = 'Rate this destination by clicking on the stars.';
+        } else {
+            this.informationAboutRating = 'You need to be logged in to rate this destination.';
+        }
     }
 
     showMap() {
@@ -178,7 +184,6 @@ export class DetailsDestinationComponent implements OnInit {
         const userId = this.authService.getCurrentUserId();
 
         if (!userId) {
-            console.error('User ID not available');
             return;
         }
 

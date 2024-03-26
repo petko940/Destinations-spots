@@ -19,7 +19,9 @@
         </h2>
 
     </div>
-    <small class="text-white flex justify-center pb-5 text-lg">Rate this destination by clicking on the stars</small>
+    <small class="text-white flex justify-center pb-5 text-lg">
+        {{ informationAboutRating }}
+    </small>
 
     <div *ngIf="canEdit()" class="flex justify-center gap-3 pb-7">
         <button [routerLink]="['/edit-destination', destinationId]"
