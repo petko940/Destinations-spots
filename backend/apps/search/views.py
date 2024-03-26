@@ -11,7 +11,7 @@ User = get_user_model()
 # Create your views here.
 class Search(APIView):
     def get(self, request):
-        search_text = request.query_params.get('search')
+        search_text = request.query_params.get('result')
         if search_text:
             user_queryset = User.objects.filter(username__icontains=search_text)
             destination_name_search = Destination.objects.filter(name__icontains=search_text)

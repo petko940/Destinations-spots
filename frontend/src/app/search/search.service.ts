@@ -14,7 +14,7 @@ export class SearchService {
     private http: HttpClient,
   ) { }
 
-  searchUser(searchText: string) {
-    return this.http.get<any>(`${this.apiUrl}user/search`, { params: { search: searchText } });
+  search(searchText: string) {
+    return this.http.get<any>(`${this.apiUrl}search`, { params: { result: searchText } });
   }
 }

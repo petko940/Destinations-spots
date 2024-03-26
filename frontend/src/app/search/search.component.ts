@@ -37,13 +37,15 @@ export class SearchComponent implements OnInit {
     }
 
     search() {
-        this.searchService.searchUser(this.searchService.searchValue)
+        this.searchService.search(this.searchService.searchValue)
             .subscribe((result: any) => {
                 this.foundDestinations = result['destinations'];
                 this.isFoundDestinations = this.foundDestinations.length > 0 ? true : false;
                 this.foundUsers = result['users'];
                 this.isFoundUsers = this.foundUsers.length > 0 ? true : false;
 
+            }, error => {
+                console.log(error);
             })
     }
 
