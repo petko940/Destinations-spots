@@ -88,14 +88,26 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     "default": {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": os.getenv('DB_NAME', None),
+#         "USER": os.getenv('DB_USER', None),
+#         "PASSWORD": os.getenv('DB_PASSWORD', None),
+#         "HOST": os.getenv('DB_HOST', None),
+#         "PORT": os.getenv('DB_PORT', None),
+#     }
+# }
+
 DATABASES = {
-    "default": {
+    'default': {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv('DB_NAME', None),
-        "USER": os.getenv('DB_USER', None),
-        "PASSWORD": os.getenv('DB_PASSWORD', None),
-        "HOST": os.getenv('DB_HOST', None),
-        "PORT": os.getenv('DB_PORT', None),
+        'NAME': 'destinations-spots-db',
+        'USER': 'petko',
+        'PASSWORD': 'password',
+        # 'HOST': 'postgres',  # set in docker-compose.yaml
+        'HOST': '127.0.0.1',  # set in docker app
+        'PORT': '5432',
     }
 }
 
