@@ -32,12 +32,13 @@
         <h4 class="text-xl mb-1 text-center">Destinations names:</h4>
         <div
             class="mb-1 flex flex-wrap justify-center items-center gap-3 before:content-['•'] before:text-orange-300 after:content-['•'] after:text-orange-300">
-            <div *ngFor="let destination of destinationsByUser; let i = last" class="text-lg">
-                {{ destination.name }}
-                <span *ngIf="!i">,</span>
+            <div *ngFor="let destination of destinationsByUser; let last = last; let i = index" class="text-lg">
+                {{ i + 1 }} - {{ destination.name }}
+                <span *ngIf="!last" class="text-green-300">,</span>
             </div>
         </div>
     </div>
 
-    <h4 *ngIf="isCurrentUserProfile" class="text-xl">You rated destinations <span class="text-orange-300">{{ ratingsCount }}</span> times</h4>
+    <h4 *ngIf="isCurrentUserProfile" class="text-xl">You rated destinations <span class="text-orange-300">{{
+            ratingsCount }}</span> times</h4>
 </div>
