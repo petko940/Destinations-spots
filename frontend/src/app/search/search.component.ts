@@ -12,6 +12,8 @@ import { User } from '../types/user';
 export class SearchComponent implements OnInit {
     isLoading: boolean = true;
 
+    searchText: string = '';
+
     foundDestinations!: Destination[];
     isFoundDestinations: boolean = false;
 
@@ -28,6 +30,7 @@ export class SearchComponent implements OnInit {
             this.isLoading = false;
             if (params['text']) {
                 this.searchService.searchValue = params['text'];
+                this.searchText = params['text'];
                 this.search();
             }
         }, error => {

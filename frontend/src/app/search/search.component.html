@@ -1,6 +1,10 @@
 <app-loader [loading]="isLoading"></app-loader>
 
-<div *ngIf="!isLoading" class="text-white flex flex-wrap justify-center gap-5 p-10 max-lg:p-2">
+<h1 class="text-center text-cyan-200 text-3xl p-5">
+    Search results for <span class="italic text-cyan-300">"{{ searchText }}"</span>
+</h1>
+
+<div *ngIf="!isLoading" class="text-white flex flex-wrap justify-center gap-5 pb-10 max-lg:p-2">
     <div>
         <h1 *ngIf="isFoundDestinations; else destinationsNotFound" class="text-3xl text-center text-green-100">Destinations found</h1>
         <ng-template #destinationsNotFound>
