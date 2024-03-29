@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../auth/auth.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { validateUsername } from '../../auth/custom-username-validators';
 import { UserService } from '../user.service';
 
@@ -10,7 +10,7 @@ import { UserService } from '../user.service';
     templateUrl: './edit-username.component.html',
     styleUrl: './edit-username.component.css'
 })
-export class EditUsernameComponent {
+export class EditUsernameComponent implements OnInit {
     userId = this.authService.getCurrentUserId();
     username = this.authService.getCurrentUsername();
     editUsernameForm: FormGroup;
@@ -24,6 +24,7 @@ export class EditUsernameComponent {
         private authService: AuthService,
         private router: Router,
         private userService: UserService,
+        private route: ActivatedRoute
     ) {
         this.editUsernameForm = this.fb.group({
             username: ['',
@@ -31,6 +32,18 @@ export class EditUsernameComponent {
                     validateUsername,
                 Validators.minLength(3)]],
         });
+    }
+
+    ngOnInit(): void {
+        this.checkIsCurrentUser();
+    }
+
+    checkIsCurrentUser() {
+        this.route.params.subscribe(params => {
+            if (params['username'] !== this.username) {
+                this.router.navigate(['/']);
+            }
+        })
     }
 
     onSubmit() {
