@@ -2,7 +2,7 @@
 
 <div class="w-7/12 max-lg:w-11/12 h-fit p-5 m-10 border-white border-2 mx-auto rounded backdrop-blur-sm">
 
-    <form [formGroup]="fg" class="flex flex-col gap-4 text-xl text-white p-7">
+    <form (ngSubmit)="onSubmit()" [formGroup]="fg" class="flex flex-col gap-4 text-xl text-white p-7">
         <h1 class="text-3xl mx-auto p-4">
             Create Destination Location
         </h1>
@@ -59,7 +59,7 @@
         <p>{{ selectedLocation.location }}</p>
 
         <div class="mx-auto">
-            <button (click)="onSubmit()"
+            <button
                 [disabled]="fg.invalid || !selectedLocation.location || selectedLocation.location === 'Unknown! Choose another location!'"
                 type="submit" class="rounded-md bg-cyan-600 text-white px-6 py-2 disabled:bg-gray-400">
                 Create
