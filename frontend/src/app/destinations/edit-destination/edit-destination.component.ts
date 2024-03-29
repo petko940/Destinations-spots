@@ -77,7 +77,11 @@ export class EditDestinationComponent {
 
     fetchDestination() {
         this.editDestinationService.fetchDestinationData(this.destinationId)
-            .subscribe(data => {
+            .subscribe(data => {                
+                if (data.user !== this.currentUser) {
+                    this.router.navigate(['/']);
+                }
+
                 this.isLoading = false;
                 this.currentDestination = data;
                 this.populateForm();
