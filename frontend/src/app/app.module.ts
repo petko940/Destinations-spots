@@ -35,7 +35,7 @@ import { AppInterceptor } from './app.interceptor';
     CoreModule,
     SharedModule,
     DestinationsModule,
-    AuthModule,
+    // AuthModule,
     UserModule,
 
     AppRoutingModule,

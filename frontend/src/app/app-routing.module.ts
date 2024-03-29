@@ -10,6 +10,8 @@ const routes: Routes = [
   { path: "about", component: AboutComponent },
   { path: "search/:text", component: SearchComponent },
 
+  { path : '', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
+  
   { path: '**', redirectTo: '404' },
   { path: '404', component: ErrorComponent },
 ];
