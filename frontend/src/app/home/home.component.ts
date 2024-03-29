@@ -43,6 +43,7 @@ export class HomeComponent implements OnInit {
 
             }, error => {
                 this.isLoading = false;
+                this.fetchAverageRatingPerDestination();
                 console.log(error);
             })
     }
@@ -75,6 +76,7 @@ export class HomeComponent implements OnInit {
                 this.mostRecentCreatedDestinations = response;
             }, error => {
                 this.isLoading = false;
+                this.fetchMostRecentCreatedDestinations();
                 console.log(error);
             })
     }

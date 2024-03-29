@@ -1,44 +1,70 @@
 import { Injectable } from '@angular/core';
-import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent } from '@angular/common/http';
-import { Observable, switchMap, tap, throwError } from 'rxjs';
+import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
 import { jwtDecode } from "jwt-decode";
 import { AuthService } from './auth/auth.service';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AppInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) { }
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+  ) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const token = this.authService.getAccessToken();
+    const accessToken = this.authService.getAccessToken();
 
-    if (token) {
-      if (this.isTokenExpired(token)) {
-        this.authService.logout();
-        return throwError('Token expired');
-      }
-
+    if (accessToken) {
       request = request.clone({
         setHeaders: {
-          Authorization: `Bearer ${token}`
+          Authorization: `Bearer ${accessToken}`
         }
       });
     }
 
-    return next.handle(request)
+    return next.handle(request).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 404) {
+          this.router.navigate(['/404']);
+        }
+        else if (error.status === 401) {
+          if (this.authService.isRefreshTokenExpired()) {
+            this.authService.logout();
+            return throwError('Token expired');
+            
+          } else {
+            return this.refreshToken(request, next);
+
+          }
+        }
+        return throwError(error);
+      })
+    )
   }
 
-  private isTokenExpired(token: string): boolean {
-    const tokenExpiration = this.getTokenExpiration(token);
-    return tokenExpiration !== null && tokenExpiration <= new Date();
+  private refreshToken(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    return this.authService.refreshToken().pipe(
+      switchMap((data) => {
+        const newToken = data.access;
+
+        request = request.clone({
+          setHeaders: {
+            Authorization: `Bearer ${newToken}`
+          }
+        });
+
+        this.authService.saveAccessToken(newToken);
+
+        return next.handle(request);
+      }),
+      catchError((error) => {
+        this.authService.logout();
+        return throwError(error);
+      })
+    );
   }
 
-  private getTokenExpiration(token: string): any {
-    const decodedToken: any = jwtDecode(token);
-    if (!decodedToken.exp) return null;
-    const date = new Date(0);
-    date.setUTCSeconds(decodedToken.exp);
-    return date;
-  }
 }
 

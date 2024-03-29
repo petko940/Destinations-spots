@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment.development';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { jwtDecode } from "jwt-decode";
 
@@ -90,18 +90,25 @@ export class AuthService {
         return this.getCookie(this.accessTokenKey);
     }
 
-    // refreshToken() {
-    //     const refreshToken = this.getCookie(this.refreshTokenKey);
-    //     return this.http.post<any>(`${this.apiUrl}token-refresh/`, { refresh: refreshToken }).pipe(
-    //         tap((response: any) => {
-    //             console.log(response);
+    refreshToken() {
+        const refreshToken = this.getCookie(this.refreshTokenKey);
+        return this.http.post<any>(`${this.apiUrl}token-refresh/`, { refresh: refreshToken }).pipe();
+    }
 
-    //         }))
-    // }
-
-    // saveAccessToken(token: string) {
-    //     const expiresDate = new Date();
-    //     expiresDate.setDate(expiresDate.getDate() + 7);
-    //     document.cookie = `${this.accessTokenKey}=${token}; expires=${expiresDate.toUTCString()}; path=/`;
-    // }
+    isRefreshTokenExpired(): boolean {
+        const refreshToken = this.getCookie(this.refreshTokenKey);
+        if (refreshToken) {
+            const decodedToken: any = jwtDecode(refreshToken);
+            const expirationDate = new Date(0);
+            expirationDate.setUTCSeconds(decodedToken.exp);
+            return expirationDate < new Date();
+        }
+        return true;
+    }
+    
+    saveAccessToken(token: string) {
+        const expiresDate = new Date();
+        expiresDate.setDate(expiresDate.getDate() + 7);
+        document.cookie = `${this.accessTokenKey}=${token}; expires=${expiresDate.toUTCString()}; path=/`;
+    }
 }
