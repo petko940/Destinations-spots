@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpInterceptor, HttpRequest, HttpHandler, HttpEvent, HttpErrorResponse } from '@angular/common/http';
-import { Observable, catchError, map, switchMap, tap, throwError } from 'rxjs';
-import { jwtDecode } from "jwt-decode";
+import { Observable, catchError, switchMap, throwError } from 'rxjs';
 import { AuthService } from './auth/auth.service';
 import { Router } from '@angular/router';
 
@@ -33,7 +32,7 @@ export class AppInterceptor implements HttpInterceptor {
           if (this.authService.isRefreshTokenExpired()) {
             this.authService.logout();
             return throwError('Token expired');
-            
+
           } else {
             return this.refreshToken(request, next);
 
