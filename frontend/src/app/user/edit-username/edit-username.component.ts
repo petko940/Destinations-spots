@@ -41,7 +41,7 @@ export class EditUsernameComponent implements OnInit {
     checkIsCurrentUser() {
         this.route.params.subscribe(params => {
             if (params['username'] !== this.username) {
-                this.router.navigate(['/']);
+                this.router.navigate(['/404']);
             }
         })
     }

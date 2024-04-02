@@ -79,7 +79,7 @@ export class EditDestinationComponent {
         this.editDestinationService.fetchDestinationData(this.destinationId)
             .subscribe(data => {                
                 if (data.user !== this.currentUser) {
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/404']);
                 }
 
                 this.isLoading = false;

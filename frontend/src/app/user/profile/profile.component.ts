@@ -56,8 +56,12 @@ export class ProfileComponent implements OnInit {
     destinationsCount() {
         let userId: number;
         this.authService.getUserIdByUsername(this.username)
-            .subscribe((response: any) => {
+            .subscribe((response: any) => {                
                 userId = response.id;
+                if (!userId) {
+                    this.router.navigate(['/404']);
+                }
+                
                 this.allDestinationsService.fetchAllDestinations()
                     .subscribe((response: Destination[]) => {
                         this.destinationsByUser = response.filter(d => d.user === userId);
