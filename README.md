@@ -1,6 +1,6 @@
 # Destinations-spots
 
-Discover New Destinations made by other travelers with Destinations Spots: Your Hub for Travel Experiences
+Discover new destinations created by fellow travelers with Destinations Spots: Your Hub for sharing nice spots.
 
 ## Technologies Used
 
