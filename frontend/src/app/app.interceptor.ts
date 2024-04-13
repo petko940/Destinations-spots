@@ -29,6 +29,10 @@ export class AppInterceptor implements HttpInterceptor {
           this.router.navigate(['/404']);
         }
         else if (error.status === 401) {
+          if (!this.authService.isLoggedIn()) {
+            return throwError('Not logged in');
+          }
+          
           if (this.authService.isRefreshTokenExpired()) {
             this.authService.logout();
             return throwError('Token expired');
